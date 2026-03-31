@@ -1,0 +1,12 @@
+{
+  "name": "top10-investment-system",
+  "version": "1.0.0",
+  "description": "미국 시가총액 Top 10 투자 추적 시스템",
+  "scripts": {
+    "dev": "npx wrangler pages dev .",
+    "deploy": "npx wrangler pages deploy ."
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
