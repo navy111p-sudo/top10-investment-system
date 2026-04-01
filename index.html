@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ë¯¸êµ­ ìê°ì´ì¡ Top 10 í¬ì ìì¤í</title>
+<title>미국 시가총액 Top 10 투자 시스템</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
@@ -104,16 +104,7 @@ body {
 /* === TABLE === */
 .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
-tr:hover td { background: rgba(59,130,246,0.05); }
-.rank-badge {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 50%;
-  font-weight: 800; font-size: 14px;
-}
-.rank-1 { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
-.rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
+th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }t(135deg, #c0c0c0, #a0a0a0); color: #000; }
 .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
 .rank-other { background: var(--bg-secondary); color: var(--text-secondary); }
 .ticker { color: var(--accent-blue); font-weight: 700; font-size: 13px; }
@@ -217,18 +208,18 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 <!-- NOTIFICATION BAR -->
 <div id="notificationBar" class="notification-bar">
   <button class="close-btn" onclick="closeNotification()">&times;</button>
-  <span id="notificationText">â ï¸ ìë¦¼: ìê°ì´ì¡ ìì ë³ëì´ ê°ì§ëììµëë¤!</span>
+  <span id="notificationText">⚠️ 알림: 시가총액 순위 변동이 감지되었습니다!</span>
 </div>
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo">ð Top10 í¬ììì¤í</div>
+  <div class="nav-logo">📊 Top10 투자시스템</div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showSection('dashboard')">ëìë³´ë</button>
-    <button class="nav-tab" onclick="showSection('details')">ìì¸ì ë³´</button>
-    <button class="nav-tab" onclick="showSection('backtest')">ë°±íì¤í¸</button>
-    <button class="nav-tab" onclick="showSection('alerts')">ìë¦¼</button>
-    <button class="nav-tab" onclick="showSection('advice')">í¬ìì¡°ì¸</button>
+    <button class="nav-tab active" onclick="showSection('dashboard')">대시보드</button>
+    <button class="nav-tab" onclick="showSection('details')">상세정보</button>
+    <button class="nav-tab" onclick="showSection('backtest')">백테스트</button>
+    <button class="nav-tab" onclick="showSection('alerts')">알림</button>
+    <button class="nav-tab" onclick="showSection('advice')">투자조언</button>
   </div>
   <div class="nav-time" id="navTime"></div>
 </nav>
@@ -238,7 +229,7 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
 <!-- ========== 1. DASHBOARD ========== -->
 <div id="dashboard" class="section active">
-  <div class="section-title"><span class="icon">ð</span> ë¯¸êµ­ ìê°ì´ì¡ Top 10 ê¸°ì</div>
+  <div class="section-title"><span class="icon">🏆</span> 미국 시가총액 Top 10 기업</div>
 
   <!-- KPI Cards -->
   <div class="grid-4" id="kpiCards"></div>
@@ -248,8 +239,8 @@ tr:hover td { background: rgba(59,130,246,0.05); }
     <table id="mainTable">
       <thead>
         <tr>
-          <th>ìì</th><th>í°ì»¤</th><th>ê¸°ìëª</th><th>ìê°ì´ì¡</th><th>ìì¢</th>
-          <th>ë§¤ì¶</th><th>ì¬ì´ìµ</th><th>ë¶ì±ë¹ì¨</th><th>ROE</th><th>PER</th><th>ë°°ë¹ë¥ </th>
+          <th>순위</th><th>티커</th><th>기업명</th><th>시가총액</th><th>업종</th>
+          <th>매출</th><th>순이익</th><th>부채비율</th><th>ROE</th><th>PER</th><th>배당률</th>
         </tr>
       </thead>
       <tbody id="mainTableBody"></tbody>
@@ -259,13 +250,13 @@ tr:hover td { background: rgba(59,130,246,0.05); }
   <!-- Charts Row -->
   <div class="grid-2">
     <div class="card">
-      <h3 style="font-size:15px; margin-bottom:12px;">ð ìê°ì´ì¡ ë¹êµ</h3>
+      <h3 style="font-size:15px; margin-bottom:12px;">📈 시가총액 비교</h3>
       <div class="chart-container" style="height:300px;">
         <canvas id="marketCapChart"></canvas>
       </div>
     </div>
     <div class="card">
-      <h3 style="font-size:15px; margin-bottom:12px;">ð¥§ ìì¢ë³ ë¶í¬</h3>
+      <h3 style="font-size:15px; margin-bottom:12px;">🥧 업종별 분포</h3>
       <div class="chart-container" style="height:300px;">
         <canvas id="sectorChart"></canvas>
       </div>
@@ -273,16 +264,16 @@ tr:hover td { background: rgba(59,130,246,0.05); }
   </div>
 
   <!-- Exited Companies -->
-  <div class="section-title" style="margin-top:20px;"><span class="icon">ð¨</span> 10ì ë°ì¼ë¡ ëê° ê¸°ì</div>
+  <div class="section-title" style="margin-top:20px;"><span class="icon">🚨</span> 10위 밖으로 나간 기업</div>
   <div id="exitedCompanies"></div>
 
   <!-- Investment Advice Summary -->
-  <div class="section-title" style="margin-top:20px;"><span class="icon">ð¡</span> íí í¬ì ì¡°ì¸</div>
+  <div class="section-title" style="margin-top:20px;"><span class="icon">💡</span> 향후 투자 조언</div>
   <div id="adviceSummary"></div>
 
   <!-- Performance Comparison Mini Chart -->
   <div class="card" style="margin-top:16px;">
-    <h3 style="font-size:15px; margin-bottom:12px;">ð ì ë¾¹ vs ì§ì ë¹êµ (ìµê·¼ 1ë)</h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">📊 전략 vs 지수 비교 (최근 1년)</h3>
     <div class="chart-container" style="height:300px;">
       <canvas id="miniCompareChart"></canvas>
     </div>
@@ -291,18 +282,18 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
 <!-- ========== 2. DETAILS ========== -->
 <div id="details" class="section">
-  <div class="section-title"><span class="icon">ð</span> ê¸°ì ìì¸ ì¬ë¬´ì ë³´</div>
+  <div class="section-title"><span class="icon">📋</span> 기업 상세 재무정보</div>
   <div id="detailCards"></div>
 </div>
 
 <!-- ========== 3. BACKTEST ========== -->
 <div id="backtest" class="section">
-  <div class="section-title"><span class="icon">ð</span> 10ëê° ë°±íì¤í¸ (2016~2026)</div>
+  <div class="section-title"><span class="icon">📈</span> 10년간 백테스트 (2016~2026)</div>
 
   <div class="grid-4">
     <div class="card stat-card">
       <div class="stat-value positive" id="btTop10Return">+842%</div>
-      <div class="stat-label">Top10 ì ëµ</div>
+      <div class="stat-label">Top10 전략</div>
     </div>
     <div class="card stat-card">
       <div class="stat-value" style="color:var(--accent-blue)" id="btSP500Return">+322%</div>
@@ -310,30 +301,30 @@ tr:hover td { background: rgba(59,130,246,0.05); }
     </div>
     <div class="card stat-card">
       <div class="stat-value" style="color:var(--accent-purple)" id="btNasdaqReturn">+510%</div>
-      <div class="stat-label">ëì¤ë¥ 100</div>
+      <div class="stat-label">나스닥 100</div>
     </div>
     <div class="card stat-card">
       <div class="stat-value" style="color:var(--accent-cyan)" id="btDowReturn">+198%</div>
-      <div class="stat-label">ë¤ì°ì¡´ì¤</div>
+      <div class="stat-label">다우존스</div>
     </div>
   </div>
 
   <div class="card" style="margin-bottom: 20px;">
-    <h3 style="font-size:15px; margin-bottom:12px;">ëì  ììµë¥  ë¹êµ</h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">누적 수익률 비교</h3>
     <div class="chart-container">
       <canvas id="backtestChart"></canvas>
     </div>
   </div>
 
   <div class="card" style="margin-bottom: 20px;">
-    <h3 style="font-size:15px; margin-bottom:12px;">ì°ëë³ ììµë¥ </h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">연도별 수익률</h3>
     <div class="chart-container">
       <canvas id="yearlyReturnChart"></canvas>
     </div>
   </div>
 
   <div class="card">
-    <h3 style="font-size:15px; margin-bottom:12px;">KOSPI í¬í¨ ë¹êµ</h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">KOSPI 포합 비교</h3>
     <div class="chart-container">
       <canvas id="kospiCompareChart"></canvas>
     </div>
@@ -342,28 +333,28 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
 <!-- ========== 4. ALERTS ========== -->
 <div id="alerts" class="section">
-  <div class="section-title"><span class="icon">ð</span> ìì ë³ë ìë¦¼</div>
+  <div class="section-title"><span class="icon">🔔</span> 순위 변동 알림</div>
   <div id="alertList"></div>
 
   <div class="card" style="margin-top:20px;">
-    <h3 style="font-size:15px; margin-bottom:12px;">âï¸ ìë¦¼ ì¤ì </h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">⚙️ 알림 설정</h3>
     <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
-      ìê°ì´ì¡ 10ì ë°ì¼ë¡ ëê°ë ê¸°ìì´ ê°ì§ëë©´ ìëì¼ë¡ ìë¦¼ì ë³´ëëë¤.
+      시가총액 10위 밖으로 나가는 기업이 감지되면 자동으로 알림을 보넅니다.
     </p>
     <div style="display:flex; gap:12px; flex-wrap:wrap;">
       <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
-        <input type="checkbox" checked id="alertEnabled" onchange="toggleAlert()"> ë¸ë¼ì°ì  ìë¦¼ íì±í
+        <input type="checkbox" checked id="alertEnabled" onchange="toggleAlert()"> 브라우저 알림 활성화
       </label>
       <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
-        <input type="checkbox" checked id="alertSound"> ìë¦¬ ìë¦¼
+        <input type="checkbox" checked id="alertSound"> 소리 알림
       </label>
     </div>
   </div>
 
-  <div class="section-title" style="margin-top:24px;"><span class="icon">ð</span> ìì ë³ë ì´ë ¥</div>
+  <div class="section-title" style="margin-top:24px;"><span class="icon">📜</span> 순위 변동 이력</div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>ë ì§</th><th>ë³ë ë´ì©</th><th>ì¡°ì¹</th><th>ìí</th></tr></thead>
+      <thead><tr><th>날짜</th><th>변동 내용</th><th>조치</th><th>상태</th></tr></thead>
       <tbody id="historyTableBody"></tbody>
     </table>
   </div>
@@ -371,7 +362,7 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
 <!-- ========== 5. ADVICE ========== -->
 <div id="advice" class="section">
-  <div class="section-title"><span class="icon">ð§ </span> AI í¬ì ì¡°ì¸</div>
+  <div class="section-title"><span class="icon">🧠</span> AI 투자 조언</div>
   <div id="adviceCards"></div>
 </div>
 
@@ -379,52 +370,426 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
 <!-- FOOTER -->
 <div class="footer">
-  <p>ë¯¸êµ­ ìê°ì´ì¡ Top 10 í¬ì ìì¤í &copy; 2026 | ë°ì´í° ê¸°ì¤: 2026ë 3ì 31ì¼</p>
-  <p style="margin-top:4px;">ë³¸ ìì¤íì í¬ì ì°¸ê³ ì©ì´ë©°, í¬ìì ìµì¢ ì±ìì í¬ìììê² ììµëë¤.</p>
+  <p>미국 시가총액 Top 10 투자 시스템 &copy; 2026 | 데이터 기준: 2026년 3월 31일</p>
+  <p style="margin-top:4px;">본 시스템은 투자 참고용이며, 투자의 최종 책임은 투자자에게 있습니다.</p>
 </div>
 
 <script>
 // ===== DATA =====
 const TOP10_DATA = [
-  { rank:1, ticker:"NVDA", name:"NVIDIA", marketCap:4.37, sector:"ë°ëì²´", sectorEn:"Semiconductors", color:"#76b900",
-    revenue:"1,305ìµ$", profit:"708ìµ$", debtRatio:"29%", roe:"111%", per:38.2, dividend:"0.03%",
-    desc:"AI ë°ëì²´ ì ë ê°ì. GPU ë° ë°ì´í°ì¼í° ì¹© ìì¥ ëì ì  ì§ì. AI ì¸íë¼ ìì í­ì¦ì¼ë¡ ë§¤ì¶Â·ì´ìµ ëª¨ë ì¬ì ìµë." },
-  { rank:2, ticker:"AAPL", name:"Apple", marketCap:3.77, sector:"ìë¹ì ì ì", sectorEn:"Consumer Electronics", color:"#a2aaad",
-    revenue:"4,128ìµ$", profit:"1,084ìµ$", debtRatio:"134%", roe:"169%", per:34.5, dividend:"0.44%",
-    desc:"ìì´í°Â·ë§¥Â·ìë¹ì¤ ìíê³. ìë¹ì¤ ë§¤ì¶ ë¹ì¤ íëë¡ ë§ì§ ê°ì . ìì¬ì£¼ ë§¤ì ì ê·¹ì ì´ë ë¶ì±ë¹ì¨ ë¤ì ëì." },
-  { rank:3, ticker:"GOOGL", name:"Alphabet", marketCap:3.65, sector:"ì¸í°ë· ìë¹ì¤", sectorEn:"Internet Services", color:"#4285f4",
-    revenue:"3,747ìµ$", profit:"1,002ìµ$", debtRatio:"9%", roe:"33%", per:22.8, dividend:"0.45%",
-    desc:"êµ¬ê¸ ê²ìÂ·ì íë¸Â·í´ë¼ì°ë. AI ê¸°ì  ì ë ê¸°ì. í´ë¼ ë°°ë°ì¤ìí¸ì ììì´ìµë¥  30% ì´ì ì ì§." },
-  { rank:4, ticker:"MSFT", name:"Microsoft", marketCap:3.01, sector:"ìíí¸ì¨ì´", sectorEn:"Software", color:"#00a4ef",
-    revenue:"2,700ìµ$", profit:"905ìµ$", debtRatio:"42%", roe:"38%", per:31.5, dividend:"0.72%",
-    desc:"Azure í´ë¼ì°ëÂ·Office 365Â·AI Copilot. ê¸°ìì© ìíí¸ì¨ì´ ê°ì. ìì ì  ììµ êµ¬ì¡°ì ë°°ë¹ë ê¾¸ì¤í ì¸ì." },
-  { rank:5, ticker:"AMZN", name:"Amazon", marketCap:2.25, sector:"ì´ì»¤ë¨¸ì¤/í´ë¼ì°ë", sectorEn:"E-commerce/Cloud", color:"#ff9900",
-    revenue:"6,380ìµ$", profit:"592ìµ$", debtRatio:"58%", roe:"23%", per:35.1, dividend:"0%",
-    desc:"AWS í´ë¼ì°ë 1ìÂ·ê¸ë¡ë² ì´ì»¤ë¨¸ì¤. AI ìë¹ì¤ íë. ë§¤ì¶ ê·ëª¨ ìµëì´ë ë¬´ë°°ë¹ ì ì± ì ì§." },
-  { rank:6, ticker:"AVGO", name:"Broadcom", marketCap:1.57, sector:"ë°ëì²´", sectorEn:"Semiconductors", color:"#cc092f",
-    revenue:"560ìµ$", profit:"175ìµ$", debtRatio:"105%", roe:"15%", per:35.8, dividend:"1.05%",
-    desc:"ë¤í¸ìí¬Â·ë°ëì²´Â·'ì¸íë¼ ìë¸í¸ì¨ì´'. VMware ì¸ì í ì¬ì ë¤ê°í. ëí¸ìí¬ AI ì¸© ìì ê¸ì¦." },
-  { rank:7, ticker:"TSLA", name:"Tesla", marketCap:1.57, sector:"ì ê¸°ì°¨/ìëì§", sectorEn:"EV/Energy", color:"#e31937",
-    revenue:"1,152ìµ$", profit:"126ì´$", debtRatio:"18%", roe:"20%", per:125.0, dividend:"0%",
-    desc:"EVÂ·ìì¨ì£¼íÂ·ìëì§ ì ì¥. PER ê·¹ëë¡ ëì ì±ì¥ ê¸°ë ë°ì. ë¡ë³íìÂ·AI ì ëµì íµì¬ ë³ì." },
-  { rank:8, ticker:"META", name:"Meta Platforms", marketCap:1.42, sector:"ììë¯¸ëì´", sectorEn:"Social Media", color:"#0668e1",
-    revenue:"1,648ìµ$", profit:"620ìµ$", debtRatio:"28%", roe:"36%", per:22.5, dividend:"0.35%",
-    desc:"íì´ì¤ë¶Ê»§,ì¸ì¤íê·¸ë¨Â·WhatsApp. ê´ê³  ë§¤ì¶ íë³µ + Reality Labs í¬ì. ìì´ìµë¸ 37% ì´ê³ ììµ êµ¬ì¡°." },
-  { rank:9, ticker:"WMT", name:"Walmart", marketCap:1.07, sector:"ì íµ/ë¦¬íì¼", sectorEn:"Retail", color:"#0071ce",
-    revenue:"6,810ìµ$", profit:"208ìµ$", debtRatio:"52%", roe:"20%", per:41.2, dividend:"0.87%",
-    desc:"ì¸ê³ ìµë ìë§¤ìì²´. 52ë ì°ì ë°°ë¹ ì¸ì 'Dividend King'. ì´ì»¤ë¨¸ì¤ ì±ì¥ì¼ë¡ ìë¡ì´ íë ¥." },
-  { rank:10, ticker:"BRK.B", name:"Berkshire Hathaway", marketCap:1.05, sector:"ê¸ìµ/ì§ì£¼íì¬", sectorEn:"Financials/Conglomerate", color:"#2d1a47",
-    revenue:"3,710ìµ$", profit:"968ìµ$", debtRatio:"25%", roe:"18%", per:10.2, dividend:"0%",
-    desc:"ìë° ë²íì í¬ì ì§ì£¼íì¬. ë³´íÂ·ìëì§Â·ì² ë ë± ë¤ê°í. PER 10ë°°ë¡ ë°¸ë£ìì´ì ë§¤ë ¥ì ." }
+  { rank:1, ticker:"NVDA", name:"NVIDIA", marketCap:4.37, sector:"반도체", sectorEn:"Semiconductors", color:"#76b900",
+    revenue:"1,306억$", profit:"708억$", debtRatio:"29%", roe:"111%", per:38.2, dividend:"0.03%",
+    desc:"AI 반도체 절대 강자. GPU 및 데이터센터 칩 시장 독점적 지위. AI 인프라 수요 폭증으로 매출·이익 모두 사상 최대." },
+  { rank:2, ticker:"AAPL", name:"Apple", marketCap:3.77, sector:"소비자 전자", sectorEn:"Consumer Electronics", color:"#a2aaad",
+    revenue:"4,128억$", profit:"1,084억$", debtRatio:"134%", roe:"169%", per:34.5, dividend:"0.44%",
+    desc:"아이폰·맥·서비스 생태계. 서비스 매출 비중 확대로 마진 개선. 자사주 매입 적극적이나 부채비율 다소 높음." },
+  { rank:3, ticker:"GOOGL", name:"Alphabet", marketCap:3.65, sector:"인터넷 서비스", sectorEn:"Internet Services", color:"#4285f4",
+    revenue:"3,747억$", profit:"1,002억$", debtRatio:"9%", roe:"33%", per:22.8, dividend:"0.45%",
+    desc:"구글 검색·유튜브·클라우드. AI 기술 선도 기업. 클림 밝런스시트에 영업이익률 30% 이상 유지." },
+  { rank:4, ticker:"MSFT", name:"Microsoft", marketCap:3.01, sector:"소프트웨어", sectorEn:"Software", color:"#00a4ef",
+    revenue:"2,700억$", profit:"905억$", debtRatio:"42%", roe:"38%", per:31.5, dividend:"0.72%",
+    desc:"Azure 클라우드·Office 365·AI Copilot. 기업용 소프트웨어 강자. 안정적 수익 구조에 배당도 꾸준히 인상." },
+  { rank:5, ticker:"AMZN", name:"Amazon", marketCap:2.25, sector:"이커머스/클라우드", sectorEn:"E-commerce/Cloud", color:"#ff9900",
+    revenue:"6,380억$", profit:"592억$", debtRatio:"58%", roe:"23%", per:35.1, dividend:"0%",
+    desc:"AWS 클라우드 1위·글로벌 이커머스. AI 서비스 확대. 매출 규모 최대이나 무배당 정책 유지." },
+  { rank:6, ticker:"AVGO", name:"Broadcom", marketCap:1.57, sector:"반도체", sectorEn:"Semiconductors", color:"#cc092f",
+    revenue:"560억$", profit:"175억$", debtRatio:"105%", roe:"15%", per:35.8, dividend:"1.05%",
+    desc:"네트워크·반도체·인프라 소프트웨어. VMware 인수 후 사업 다각화. AI 네트워킵 칩 수요 급증." },
+  { rank:7, ticker:"TSLA", name:"Tesla", marketCap:1.57, sector:"전길차/에너지", sectorEn:"EV/Energy", color:"#e31937",
+    revenue:"1,152억$", profit:"126億$", debtRatio:"18%", roe:"20%", per:125.0, dividend:"0%",
+    desc:"EV·자율주행·에너지 저장. PER 극도로 높아 성장 기대 반영. 로보택시·AI 전략이 핵시 변수." },
+  { rank:8, ticker:"META", name:"Meta Platforms", marketCap:1.42, sector:"소셜미디어", sectorEn:"Social Media", color:"#0668e1",
+    revenue:"1,648억$", profit:"620억$", debtRatio:"28%", roe:"36%", per:22.5, dividend:"0.35%",
+    desc:"페이스북·인스타그램·WhatsApp. 광고 매출 회복 + Reality Labs 투자. 순이익률 37% 초고수익 구조." },
+  { rank:9, ticker:"WMT", name:"Walmart", marketCap:1.07, sector:"유통/리테일", sectorEn:"Retail", color:"#0071ce",
+    revenue:"6,810억$", profit:"208억$", debtRatio:"52%", roe:"20%", per:41.2, dividend:"0.87%",
+    desc:"세계 최대 소매업체. 52년 연속 배당 인상 'Dividend King'. 이커머스 성장으로 새로운 활력." },
+  { rank:10, ticker:"BRK.B", name:"Berkshire Hathaway", marketCap:1.05, sector:"금융/지주회사", sectorEn:"Financials/Conglomerate", color:"#2d1a47",
+    revenue:"3,710억$", profit:"968억$", debtRatio:"25%", roe:"18%", per:10.2, dividend:"0%",
+    desc:"워렌 버핏의 투자 지주회사. 보험·에너지·철도 등 다각화. PER 10배로 밼류에이션 매력적." }
 ];
 
 const EXITED_COMPANIES = [
-  { ticker:"JPM", name:"JP Morgan Chase", reason:"ê¸ìµì ê·ì  ê°í ì°ë ¬ì«Éx^ÉËÎºÎÉÙÉé«ÉÛN¸ùÉËÎºÂÈ¹Î«ËIÞÉZÙY¹ÛÒâ##^¸XBN»hN«¸È»BÉ[ÒR«	ÈhÂâ"ÂFFS¢###bÓ"ÓR"ÂÖ&¶WD6¢"Cã5B"ÒÀ¢²F6¶W#¢$ÄÅ"ÂæÖS¢$VÆÆÆÇ"Â&V6öã¢.»NºxÎËº8ÎÊ	Â«+ÞÉøÈºÎÙB¸[»;N¸[¹INÈªNØÂ¹;ÉdD«yÎÊ	ÂºjÎÈªNØÎºÂÈ¹Î«ËIÞÉZÊÊ	RâËYÎ«:Ê	¸È»BRRÙY¹ÛÒâ"ÂFFS¢###bÓÓ#"ÂÖ&¶WD6¢"CãB"ÒÀ¥Ó° ¢òò&6·FW7BFF6×VÆFVBæçVÂ&WGW&ç2#bÓ##b¦6öç7BT%2Ò²s#brÂs#rrÂs#rÂs#rÂs##rÂs##rÂs##"rÂs##2rÂs##BrÂs##RrÂs##bDBuÓ°¦6öç7B$4µDU5BÒ°¢F÷¢³ãRÂC"ã2ÂÓ"ãÂ3ã"ÂS"ãÂ32ãBÂÓ#ãRÂcã"ÂC"ãÂ3Rã"ÂÓRã5ÒÀ¢7S¢³"ãÂ#ãÂÓBãBÂ3ãRÂãBÂ#ãrÂÓãÂ#bã2Â#RãÂ#2ã2ÂÓRã5ÒÀ¢æ6F¢³rãÂ3"ãrÂÓã2Â3ãÂCãÂ#rãRÂÓ3"ãBÂSRãÂ#RãbÂ#ãBÂÓrã%ÒÀ¢F÷s¢³bãRÂ#ãÂÓ2ãRÂ#Rã2ÂãrÂ#ãÂÓbãÂbã"ÂRãÂrãRÂÓBãÒÀ¢¶÷7¢³2ã2Â#ãÂÓrã2ÂrãrÂ3ãÂ2ãbÂÓ#BãÂãrÂÓãbÂrã"Â"ãÒÀ§Ó° ¦gVæ7Föâ7V×VÆFfU&WGW&ç2'"°¢ÆWB7VÒÒ³Ó°¢f÷"ÆWBÒ²Â'"æÆVæwF²²²°¢7VÒçW67VÕ¶7VÒæÆVæwFÓÒ¢²'%¶Òó°¢Ð¢&WGW&â7VÓ°§Ð ¦6öç7B5TÒÒ·Ó°¤ö&¦V7Bæ¶W2$4µDU5Bæf÷$V6²Óâ5TÕ¶µÒÒ7V×VÆFfU&WGW&ç2$4µDU5E¶µÒ° ¦6öç7B5Dõ%ôUdTåE2Ò°¢²FFS¢###bÓ"ÓR"ÂFW63¢$¥Ö÷&vâ66R¥Ò(i"ÉÈB»	bØ8¹ÛÒÂvÆÖ'BtÕBÊxNÉèR"Â7Föã¢$¥ÒÊN¹øºzN¸øB(i"tÕB¸ùÉÛÂ«ÉZºzNÈ"Â7FGW3¢.ÉNº8Â"ÒÀ¢²FFS¢###bÓÓ#"ÂFW63¢$VÆÆÆÇÄÅ(i"ÉÈB»	bØ8¹ÛÒÂ&W&·6&RFv%$²ä"ÊxNÉèR"Â7Föã¢$ÄÅÊN¹øºzN¸øB(i"%$²ä"¸ùÉÛÂ«ÉZºzNÈ"Â7FGW3¢.ÉNº8Â"ÒÀ¢²FFS¢###RÓÓR"ÂFW63¢%6×7VærE4Ô2«ZË+BÉxnÉØÂ(i"ÈÎÉÈB»8¸ùÉxnÉØÂ"Â7Föã¢.ÊË»hÙXNÉ©B"Â7FGW3¢.Ù^ÉÛ"ÒÀ¢²FFS¢###RÓÓ""ÂFW63¢$&W&·6&RFv%$²ä"(i"ÉÈB»	bØ8¹ÛÒÂ'&öF6öÒdtòÊxNÉèR"Â7Föã¢$%$²ä"ÊN¹øºzN¸øB(i"dtò¸ùÉÛÂ«ÉZºzNÈ"Â7FGW3¢.ÉNº8Â"ÒÀ¢²FFS¢###RÓ2Ó"ÂFW63¢%FW6ÆE4Ä(i"ÉÈB»	bØ8¹ÛÒÙ¸BÉêÎÊxNÉèR"Â7Föã¢%E4ÄºzN¸øBÙ¸BÉêÎºzNÈ»8¸ùÈKÊ;ÎÉÙ"Â7FGW3¢.ÉNº8Â"ÒÀ¥Ó° ¦6öç7B4T5Dõ%ô4ôÄõ%2Ò°¢.»	¸øNË+B#¢"3sf#"Â.ÈhÎ»NÉéÊNÉé#¢"6&B"Â.ÉÛØK¸KrÈIÎ»NÈªB#¢"3C#VcB"À¢.ÈhÎÙHNØ«ÉºÉkB#¢"3FVb"Â.ÉÛNËºNºÈªBþØN¹ÛÎÉ«¹9Â#¢"6fc"Â.ÊN«Ë
-þÉy¸HÊx#¢"6S33r"À¢.ÈhÎÈYÎºû¹INÉkB#¢"3ccS"Â.ÉÊØkRþºjÎØXÎÉÛÂ#¢"3s6R"Â.«ÉËRþÊxÊ;ÎÙ¨ÎÈ*Â#¢"3&CCr §Ó° ¢òòÓÓÓÓÒ$TäDU"eTä5Dôå2ÓÓÓÓÐ¦gVæ7Föâ&VæFW$µ°¢6öç7BF÷FÄÔ2ÒDõôDDç&VGV6R2Æ2Óç2¶2æÖ&¶WD6Ã°¢6öç7BfuU"ÒDõôDDç&VGV6R2Æ2Óç2¶2çW"ÃõDõôDDæÆVæwFçFôfVB°¢6öç7BFÖÂÒ ¢ÆFb6Æ73Ò&6&B7FBÖ6&B#ãÆFb6Æ73Ò'7FB×fÇVR"7GÆSÒ&&6¶w&÷VæC§f"ÒÖw&FVçBÓ²×vV&¶BÖ&6¶w&÷VæBÖ6Æ§FWC²×vV&¶B×FWBÖfÆÂÖ6öÆ÷#§G&ç7&VçC²#âBG·F÷FÄÔ2çFôfVBÕCÂöFcãÆFb6Æ73Ò'7FBÖÆ&VÂ#îËIÒÈ¹Î«ËIÞÉZÂöFcãÂöFcà¢ÆFb6Æ73Ò&6&B7FBÖ6&B#ãÆFb6Æ73Ò'7FB×fÇVR"7GÆSÒ&6öÆ÷#§f"ÒÖ66VçBÖw&VVâ²#ãÂöFcãÆFb6Æ73Ò'7FBÖÆ&VÂ#åF÷«ÉxRÈÂöFcãÂöFcà¢ÆFb6Æ73Ò&6&B7FBÖ6&B#ãÆFb6Æ73Ò'7FB×fÇVR"7GÆSÒ&6öÆ÷#§f"ÒÖ66VçB×VÆÆ÷r²#âG¶fuU'×ÂöFcãÆFb6Æ73Ò'7FBÖÆ&VÂ#îØø«zU#ÂöFcãÂöFcà¢ÆFb6Æ73Ò&6&B7FBÖ6&B#ãÆFb6Æ73Ò'7FB×fÇVR"7GÆSÒ&6öÆ÷#§f"ÒÖ66VçB×W'ÆR²#â³C"SÂöFcãÆFb6Æ73Ò'7FBÖÆ&VÂ#ã¸XB¸NÊÈÉÛ^ºZÂöFcãÂöFcà¢°¢Fö7VÖVçBævWDVÆVÖVçD'Bv·6&G2ræææW$DÔÂÒFÖÃ°§Ð ¦gVæ7Föâ&VæFW$ÖåF&ÆR°¢ÆWBFÖÂÒrs°¢DõôDDæf÷$V62Óâ°¢6öç7B&æ´6Æ72Ò2ç&æ²ÃÒ2ò&æ²ÒG¶2ç&æ·Ö¢w&æ²Ö÷FW"s°¢FÖÂ³ÒÇG#à¢ÇFCãÇ7â6Æ73Ò'&æ²Ö&FvRG·&æ´6Æ77Ò#âG¶2ç&æ·ÓÂ÷7ããÂ÷FCà¢ÇFCãÇ7â6Æ73Ò'F6¶W"#âG¶2çF6¶W'ÓÂ÷7ããÂ÷FCà¢ÇFCãÇ7â6Æ73Ò&6ö×çÖæÖR#âG¶2ææÖWÓÂ÷7ããÂ÷FCà¢ÇFCãÇ7G&öæsâBG¶2æÖ&¶WD6ÕCÂ÷7G&öæsãÂ÷FCà¢ÇFCãÇ7â6Æ73Ò'6V7F÷"Ö&FvR"7GÆSÒ&&6¶w&÷VæC¢G¶2æ6öÆ÷'Ó##¶6öÆ÷#¢G¶2æ6öÆ÷'Ó²#âG¶2ç6V7F÷'ÓÂ÷7ããÂ÷FCà¢ÇFCâG¶2ç&WfVçVWÓÂ÷FCà¢ÇFCâG¶2ç&öfGÓÂ÷FCà¢ÇFCâG¶2æFV'E&F÷ÓÂ÷FCà¢ÇFB6Æ73Ò"G·'6TfÆöB2ç&öRã#Sòw÷6FfRs¢rwÒ#âG¶2ç&öWÓÂ÷FCà¢ÇFCâG¶2çW'ÓÂ÷FCà¢ÇFCâG¶2æFfFVæGÓÂ÷FCà¢Â÷G#æ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'BvÖåF&ÆT&öGræææW$DÔÂÒFÖÃ°§Ð ¦gVæ7Föâ&VæFW$WFVB°¢ÆWBFÖÂÒrs°¢bUDTEô4ôÕäU2æÆVæwFÓÓÒ°¢FÖÂÒsÆFb6Æ73Ò&ÆW'BÖ&÷ÆW'B×7V66W72#ãÇ7â6Æ73Ò&ÆW'BÖ6öâ#î)ÈSÂ÷7ããÆFb6Æ73Ò&ÆW'BÖ6öçFVçB#ãÆCîÙNÉêÂØ8¹ÛÒ«ÉxRÉxnÉØÃÂöCãÇîºª¹:F÷«Éx^ÉÛBÉXÊ	^ÊÉËÎºÂÈÎÉÈNº[ÂÉÊÊxÙY«:ÉèÈ«^¸¸¸ºBãÂ÷ãÂöFcãÂöFcâs°¢ÒVÇ6R°¢UDTEô4ôÕäU2æf÷$V62Óâ°¢FÖÂ³ÒÆFb6Æ73Ò&ÆW'BÖ&÷ÆW'BÖFævW"#à¢Ç7â6Æ73Ò&ÆW'BÖ6öâ#ï	ù8Â÷7ãà¢ÆFb6Æ73Ò&ÆW'BÖ6öçFVçB#à¢ÆCâG¶2çF6¶W'Ò(	BG¶2ææÖWÒØ8¹ÛÞÉÛÃ¢G¶2æFFWÒÂöCà¢ÇãÇ7G&öæsîÈ¹Î«ËIÞÉZ£Â÷7G&öæsâG¶2æÖ&¶WD6ÒÂÇ7G&öæsîÈ*ÎÉÂ£Â÷7G&öæsâG¶2ç&V6öçÓÂ÷à¢ÂöFcà¢ÂöFcæ°¢Ò°¢Ð¢Fö7VÖVçBævWDVÆVÖVçD'BvWFVD6ö×æW2ræææW$DÔÂÒFÖÃ°§Ð ¦gVæ7Föâ&VæFW$Gf6U7VÖÖ'°¢6öç7BFÖÂÒ ¢ÆFb6Æ73Ò&Gf6RÖ6&B#à¢Æ3ï	øèÂÙ[^È¹ÂÉ©NÉXÓÂö3à¢ÇîÙNÉêÂF÷«Éx^ÉÙÙ[^ÈºÎÉØÇ7G&öæsäÉÛÙHN¹ÛÃÂ÷7G&öæsîÉè^¸¸¸ºBâådDÂ'&öF6öÒ¹;»	¸øNË+B«Éx^ÉÛB«	^ÈKº[Â»;NÉÛN«:ÉèÉËÎºÀ¢»^ØXÎØÂ«Éx^¹:NÉÙØÎÉéÙ^¸È«ÉÛBËiNÈKº[Â¹+~»	¾ËÙZ¸¸¸ºBâ¸ººxÂU.ÉÛB¸i.ÉØFW6Æ#^»ÉvÆÖ'BC»¸©@¢«¸È«	ÉÛB«;Î¸øNÙZÈÉèÉkBÊ;ÎÉÙ«ÙXNÉ©NÙZ¸¸¸ºBãÂ÷à¢Ç7â6Æ73Ò'Fr"7GÆSÒ&&6¶w&÷VæC§&v&bÃRÃ#ÃãR¶6öÆ÷#§f"ÒÖ66VçBÖw&VVâ²#ä»	¸øNË+B«	^ÈKÂ÷7ãà¢Ç7â6Æ73Ò'Fr"7GÆSÒ&&6¶w&÷VæC§&v&SÃ3Ã#CbÃãR¶6öÆ÷#§f"ÒÖ66VçBÖ&ÇVR²#îØN¹ÛÎÉ«¹9ÂÈKÉêSÂ÷7ãà¢Ç7â6Æ73Ò'Fr"7GÆSÒ&&6¶w&÷VæC§&v&#CRÃSÃÃãR¶6öÆ÷#§f"ÒÖ66VçB×VÆÆ÷r²#î«:U"Ê;ÎÉÙÂ÷7ãà¢ÂöFcà¢ÆFb6Æ73Ò&Gf6RÖ6&B#à¢Æ3î)©nûòºjÎÈªNØÂØúÎÉÛØ«Âö3à¢ÇäÆR»hËN»NÉÊ3B^ºÂF÷ÊIËYÎ«:â'&öF6öÞ¸øBd×v&RÉÛÈÙ¸BR^ºÂ¸i.ÉØØëà¢«ºjÂÉÛÙYÊxÉ{È¹Â»hËB»h¸»BÙ^¸È«¸ª^ÈKâFW6Æ¸©BU"#^»ºÂÈºNÊ«¸ÈË«ºzNÉ«¸i.ÉX@¢ÙY»
-ºjÎÈªNØÎÉyÉÊÉÙÙ[NÉ[ÂÙZ¸¸¸ºBãÂ÷à¢ÂöFcà¢°¢Fö7VÖVçBævWDVÆVÖVçD'BvGf6U7VÖÖ'ræææW$DÔÂÒFÖÃ°§Ð ¦gVæ7Föâ&VæFW$FWFÄ6&G2°¢ÆWBFÖÂÒrs°¢DõôDDæf÷$V62Óâ°¢FÖÂ³ÒÆFb6Æ73Ò&6&B"7GÆSÒ&Ö&vâÖ&÷GFöÓ£g²#à¢ÆFb7GÆSÒ&F7Æ¦fÆW¶§W7FgÖ6öçFVçC§76RÖ&WGvVVã¶ÆvâÖFV×3¦6VçFW#¶Ö&vâÖ&÷GFöÓ£'²#à¢ÆFcà¢Ç7â6Æ73Ò'&æ²Ö&FvRG¶2ç&æ³ÃÓ3òw&æ²Òr¶2ç&æ³¢w&æ²Ö÷FW"wÒ"7GÆSÒ&Ö&vâ×&vC£²#âG¶2ç&æ·ÓÂ÷7ãà¢Ç7â6Æ73Ò'F6¶W""7GÆSÒ&föçB×6¦S£g²#âG¶2çF6¶W'ÓÂ÷7ãà¢Ç7â6Æ73Ò&6ö×çÖæÖR"7GÆSÒ&Ö&vâÖÆVgC£¶föçB×6¦S£g²#âG¶2ææÖWÓÂ÷7ãà¢ÂöFcà¢Ç7â6Æ73Ò'6V7F÷"Ö&FvR"7GÆSÒ&&6¶w&÷VæC¢G¶2æ6öÆ÷'Ó##¶6öÆ÷#¢G¶2æ6öÆ÷'Ó²#âG¶2ç6V7F÷'ÓÂ÷7ãà¢ÂöFcà¢Ç7GÆSÒ&föçB×6¦S£7¶6öÆ÷#§f"Ò×FWB×6V6öæF'¶Ö&vâÖ&÷GFöÓ£g¶ÆæRÖVvC£ãs²#âG¶2æFW67ÓÂ÷à¢ÆFb7GÆSÒ&F7Æ¦w&C¶w&B×FV×ÆFRÖ6öÇVÖç3§&WVBWFòÖfBÆÖæÖ#Ãg"¶v£²#à¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#îÈ¹Î«ËIÞÉZÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²#âBG¶2æÖ&¶WD6ÕCÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#îºzNËiÃÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²#âG¶2ç&WfVçVWÓÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#îÈÎÉÛNÉÛSÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²#âG¶2ç&öfGÓÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#î»hËN»NÉÊÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²G·'6TfÆöB2æFV'E&Fòãòv6öÆ÷#§f"ÒÖ66VçB×&VBs¢rwÒ#âG¶2æFV'E&F÷ÓÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#å$ôSÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s¶6öÆ÷#§f"ÒÖ66VçBÖw&VVâ²#âG¶2ç&öWÓÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#åU#ÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²G¶2çW#ãSòv6öÆ÷#§f"ÒÖ66VçB×&VBs¢rwÒ#âG¶2çW'×ÂöFcà¢ÂöFcà¢ÆFb7GÆSÒ'FWBÖÆvã¦6VçFW#·FFæs£¶&6¶w&÷VæC§f"ÒÖ&r×6V6öæF'¶&÷&FW"×&FW3£²#à¢ÆFb7GÆSÒ&föçB×6¦S£¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£G²#î»¸»ºZÂöFcà¢ÆFb7GÆSÒ&föçB×vVvC£s²#âG¶2æFfFVæGÓÂöFcà¢ÂöFcà¢ÂöFcà¢ÂöFcæ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'BvFWFÄ6&G2ræææW$DÔÂÒFÖÃ°§Ð ¦gVæ7Föâ&VæFW$ÆW'G2°¢ÆWBFÖÂÒrs°¢6öç7BÆW'G2Ò°¢²GS¢wv&æærrÂ6öã¢~)ªûòrÂFFÆS¢~ÈÎÉÈB«{ÎÊ	«	È¹Â¸ÈÈ8rÂ×6s¢t&W&·6&RFvÉÈÉE4Ô2CãBÉÙÈ¹Î«ËIÞÉZË
-ÉÛN«rRºûºxÎÉè^¸¸¸ºBâ«YË+B«¸ª^ÈKÉØBºª¸¸ØKºxÊIÉè^¸¸¸ºBârÒÀ¢²GS¢væfòrÂ6öã¢	ù8¢rÂFFÆS¢~ÉÛÎÉÛÂÉé¸ùË+NØÂÙÎÈKÙBrÂ×6s¢~ºzNÉÛÂÉNÊBÈ¹Âµ5BÈ¹Î«ËIÞÉZÈÎÉÈNº[ÂÉé¸ùÉËÎºÂÙ^ÉÛÙZ¸¸¸ºBâ»8¸ùÈ¹ÂÊhÈ¹ÂÉXÎºkÎÉØB»	ÎÈJÙZ¸¸¸ºBârÒÀ¢²GS¢vFævW"rÂ6öã¢	ùKBrÂFFÆS¢s##bÓ"ÓR»8¸ù»	ÎÈ9ÒrÂ×6s¢t¥Ö÷&vâ66^«ÉÈB»	nÉËÎºÂØ8¹ÛÒâvÆÖ'N«Èº«yÂÊxNÉèRâÉé¸ùºjÎ»¹ûÈ¹ÒÉNº8ÂârÒÀ¢²GS¢w7V66W72rÂ6öã¢~)ÈRrÂFFÆS¢s##bÓÓ#ºjÎ»¹ûÈ»ÉNº8ÂrÂ×6s¢tVÆÆÆÇºzN¸øB(i"&W&·6&RFvºzNÈÉNº8Ââ¸ùÉÛÂ«ÉZ»»hBÊÉªârÒÀ¢Ó°¢ÆW'G2æf÷$V6Óâ°¢FÖÂ³ÒÆFb6Æ73Ò&ÆW'BÖ&÷ÆW'BÒG¶çGWÒ#ãÇ7â6Æ73Ò&ÆW'BÖ6öâ#âG¶æ6öçÓÂ÷7ããÆFb6Æ73Ò&ÆW'BÖ6öçFVçB#ãÆCâG¶çFFÆWÓÂöCãÇâG¶æ×6wÓÂ÷ãÂöFcãÂöFcæ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'BvÆW'DÆ7BræææW$DÔÂÒFÖÃ° ¢ÆWB7DFÖÂÒrs°¢5Dõ%ôUdTåE2æf÷$V6RÓâ°¢7DFÖÂ³ÒÇG#ãÇFCâG¶RæFFWÓÂ÷FCãÇFCâG¶RæFW67ÓÂ÷FCãÇFB7GÆSÒ&föçB×6¦S£'²#âG¶Ræ7FöçÓÂ÷FCãÇFCãÇ7â6Æ73Ò'6V7F÷"Ö&FvR"7GÆSÒ&&6¶w&÷VæC§&v&bÃRÃ#ÃãR¶6öÆ÷#§f"ÒÖ66VçBÖw&VVâ²#âG¶Rç7FGW7ÓÂ÷7ããÂ÷FCãÂ÷G#æ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'Bv7F÷'F&ÆT&öGræææW$DÔÂÒ7DFÖÃ°§Ð ¦gVæ7Föâ&VæFW$Gf6R°¢6öç7BGf6W2Ò°¢²6öã¢	øêòrÂFFÆS¢~ÊN¹ë^R«	ÎÉ©BrÂFWC¢~È¹Î«ËIÞÉZF÷¸ùÉÛÎ«ÊIØÎÉéÊN¹ë^IØÈ¹ÎÉê^ÉØB.È«Éé"«Éx^ÉyÊyÊIØÎÉéÙY¸©BºªºØXÊN¹ë^Iè^¸¸¸ºBâ¸XN«B2eS¸È»BÉ[Ò"ã.»ÉÙËH«;ÎÈÉÛ^ÉËÂ¸ºÎÈKÙhÈ«^¸¸¸ºBâÙ[^ÈºÎÉØÈ«Éé«»	N¸(BØÈÂ»º[N«(Â«YË+NÙY¸©B«(>Éè^¸¸¸ºBârÒÀ¢²6öã¢	ù8rÂFFÆS¢~ÙNÉêÂÈ¹ÎÉêRÊNºyÒrÂFWC¢tÉÛÙHN¹ÛÂÈ*ÎÉÛNØÉÛB»;«*ÙN¹	ºNÈIÂ»	¸øNË+L+~ØN¹ÛÎÉ«¹9Â«Éx^ÉÛBÈ8ÉÈN«hÎÉØBÊx»ÙY«:ÉèÈ«^¸¸¸ºBâådD
-ÒÙYÎÈ«^ÉªuR¸ø^Ê	ÉyÙéÉx^ÉkBÉÈNº[ÂÉÊÊxÊIÉØNºÂÇ&WNÉÙÉYÊxNÉÛB¸Éy¹Þ¸¸¸ºBâ¸ººxÂ##l+CB¸XBËHÊÊ	^ÈK«¸)Ø8¸)«:ÉèÉkB¸º«Ê»8¸ùÈKÉyÊ;ÎÉÙ«ÙXNÉ©NÙZ¸¸¸ºBârÒÀ¢²6öã¢~)ªûòrÂFFÆS¢~ºjÎÈªNØÂ«HºjÂrÂFWC¢~ÉÛBÊN¹ë^IÙÉ[ÞÊ	ÉØ¸ÈÙ^Ê;ÂÊyÊIºjÎÈªNØÎÉ«YË+BÈ¹ÎÊ	ÉÙ«¹é»NÉªÉè^¸¸¸ºBâØ«ÙèFW6ÆU"#WË)¹ûÂ«¸È«	ÉÛB«{¸øÎºÂ»	É¹	ÂÊ(^ºªÉÛB«¹ÛÞÙYºBØúÎØ«ØûNºjÎÉBØ8«*ÉÛBØÞ¸¸¸ºBâ«Ê(^ºªR«z¹;»»hNÉËÎºÂºjÎÈªNØÎº[Â»hNÈ+ÙY¹	Â»hËN»NÉÊÉÛB¸i.ÉØÆR3BRÂ'&öF6öÒRRÉÙÉêÎºËN«NÊNÈKÉØBÊ;ÎÈ¹ÎÙYÈKÉ©BârÒÀ¢²6öã¢	ù(ârÂFFÆS¢~Ù[^È¹ÂØÎÉéØúÎÉÛØ«rÂFWC¢~)Ç&WB(	BU"#"ã»ºÂ»^ØXÎØÂÊI«ÉêRÊØø«â«(È8ÊNÙÈK«;RÈ¹ÂËiN«È8È«ÉzÎº
-Râ)&W&·6&R(	BU"ã.»ÂÙN«»;NÉÊ¹øËYÎ¸Èâ»
-ÉkNÊÈK«*²»ºYÉyÉÛNÈYºzNº
-Râ)"ådD(	BÈ*ÎÉÛNØBÙ[^È¹ÂÈÙÎÊ;ÎÉÛN¸)«:Øø««ZÎ«BÊxÉèRâÈ^ÊÉÛB«¸ÈÉyºûËÊxº«¾ÙZ«+ÞÉ««¹ÛÒ«¸ªRârÒÀ¢²6öã¢	ùHBrÂFFÆS¢~ºjÎ»¹ûÈ»«ÉÛN¹9ÂrÂFWC¢sÉÈ»	nÉËÎºÂ¸)«¸©B«ÉxR»	ÎÈ9ÒÈ¹Ã¢)Ù[N¸»«ÉxRÊN¹øºzN¸øB(i")Èº«yÂÊxNÉèR«Éx^ÉØB¸ùÉÛÂ«ÉZÉËÎºÂºzNÈ(i")"ºzN¸ºÂÙ¨ÂÊNË+BØúÎØ«ØûNºjÎÉB«z¹;ºjÎ»¹ûÈ»«hÎÉêRâ«¹é»NÉªÉØBÊHNÉÛN«ÉÈNÙ[BÈ¹ÎÉê^«Ê;ÎºË»;N¸ºBÊxÊ	^«Ê;ÎºËÉØBÙÎÉªÙYÈKÉ©BârÒÀ¢Ó°¢ÆWBFÖÂÒrs°¢Gf6W2æf÷$V6Óâ°¢FÖÂ³ÒÆFb6Æ73Ò&Gf6RÖ6&B#ãÆ3âG¶æ6öçÒG¶çFFÆWÓÂö3ãÇâG¶çFWGÓÂ÷ãÂöFcæ°¢Ò°¢Fö7VÖVçBævWDVÆVÖVçD'BvGf6T6&G2ræææW$DÔÂÒFÖÃ°§Ð ¢òòÓÓÓÓÒ4%E2ÓÓÓÓÐ¦6öç7B6'DFVfVÇG2Ò°¢&W7öç6fS¢G'VRÀ¢ÖçFä7V7E&Fó¢fÇ6RÀ¢ÇVvç3¢²ÆVvVæC¢²Æ&VÇ3¢²6öÆ÷#¢r3F6#rÂföçC§·6¦S£ÒÒÒÒÀ¢66ÆW3¢°¢¢²F6·3§¶6öÆ÷#¢r3cCsC"rÆföçC§·6¦S£×ÒÂw&C§¶6öÆ÷#¢w&v&CRÃSRÃs"ÃãRwÒÒÀ¢¢²F6·3§¶6öÆ÷#¢r3cCsC"rÆföçC§·6¦S£×ÒÂw&C§¶6öÆ÷#¢w&v&CRÃSRÃs"ÃãRwÒÐ¢Ð§Ó° ¦gVæ7Föâ&VæFW$6'G2°¢òòÖ&¶WB6& ¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'BvÖ&¶WD66'BrÂ°¢GS¢v&"rÀ¢FF¢°¢Æ&VÇ3¢DõôDDæÖ3Óæ2çF6¶W"À¢FF6WG3¢·°¢Æ&VÃ¢~È¹Î«ËIÞÉZÊ¸ºÎ¹úÂrÀ¢FF¢DõôDDæÖ3Óæ2æÖ&¶WD6À¢&6¶w&÷VæD6öÆ÷#¢DõôDDæÖ3Óæ2æ6öÆ÷"²v62rÀ¢&÷&FW%&FW3¢bÀ¢ÕÐ¢ÒÀ¢÷Föç3¢²ââæ6'DFVfVÇG2ÂÇVvç3§²ââæ6'DFVfVÇG2çÇVvç2ÂÆVvVæC§¶F7Æ¦fÇ6W×ÒÐ¢Ò° ¢òò6V7F÷"P¢6öç7B6V7F÷$ÖÒ·Ó°¢DõôDDæf÷$V62Óâ²6V7F÷$Ö¶2ç6V7F÷%ÒÒ6V7F÷$Ö¶2ç6V7F÷%×ÇÃ²2æÖ&¶WD6²Ò°¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'Bw6V7F÷$6'BrÂ°¢GS¢vF÷VvçWBrÀ¢FF¢°¢Æ&VÇ3¢ö&¦V7Bæ¶W26V7F÷$ÖÀ¢FF6WG3¢·°¢FF¢ö&¦V7BçfÇVW26V7F÷$ÖÀ¢&6¶w&÷VæD6öÆ÷#¢ö&¦V7Bæ¶W26V7F÷$ÖæÖ3Óå4T5Dõ%ô4ôÄõ%5·5×ÇÂr3ccbrÀ¢&÷&FW%vGF¢À¢ÕÐ¢ÒÀ¢÷Föç3¢²&W7öç6fS§G'VRÂÖçFä7V7E&Fó¦fÇ6RÀ¢ÇVvç3§²ÆVvVæC§²÷6Föã¢w&vBrÂÆ&VÇ3§¶6öÆ÷#¢r3F6#rÆföçC§·6¦S£ÒÇFFæs£ÒÒÐ¢Ð¢Ò° ¢òòÖæ6ö×&R"¢6öç7BÆ7C"Ò²sNÉ¹BrÂs^É¹BrÂsnÉ¹BrÂs~É¹BrÂsÉ¹BrÂsÉ¹BrÂsÉ¹BrÂsÉ¹BrÂs.É¹BrÂsÉ¹BrÂs.É¹BrÂs>É¹BuÓ°¢6öç7BvVã"Ò&6RÇföÂÓâ°¢ÆWBcÕ¶&6UÓ²f÷"ÆWBÓ¶Ã#¶²²bçW6e¶ÓÒ¢²ÖFç&æFöÒÓãCR§föÂ°¢&WGW&âbæÖÓâ²çFôfVB°¢Ó°¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'BvÖæ6ö×&T6'BrÂ°¢GS¢vÆæRrÀ¢FF§°¢Æ&VÇ3¦Æ7C"À¢FF6WG3¥°¢¶Æ&VÃ¢uF÷ÊN¹ëRrÆFF¦vVã"ÃãÆ&÷&FW$6öÆ÷#¢r3#rÆ&6¶w&÷VæD6öÆ÷#¢w&v&bÃRÃ#ÃãrÆfÆÃ§G'VRÇFVç6öã£ã2ÇöçE&FW3£'ÒÀ¢¶Æ&VÃ¢u2eSrÆFF¦vVã"ÃãRÆ&÷&FW$6öÆ÷#¢r36#&cbrÇFVç6öã£ã2ÇöçE&FW3£'ÒÀ¢¶Æ&VÃ¢~¸)ÈªN¸ºSrÆFF¦vVã"ÃãrÆ&÷&FW$6öÆ÷#¢r3#V6cbrÇFVç6öã£ã2ÇöçE&FW3£'ÒÀ¢¶Æ&VÃ¢t´õ5rÆFF¦vVã"ÃãbÆ&÷&FW$6öÆ÷#¢r3f#fCBrÇFVç6öã£ã2ÇöçE&FW3£'ÒÀ¢Ð¢ÒÀ¢÷Föç3¦6'DFVfVÇG0¢Ò° ¢òò&6·FW7B7V×VÆFfP¢6öç7B7VÔÆ&VÇ2Ò²s#^ºyrÂââåT%5Ó°¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'Bv&6·FW7D6'BrÂ°¢GS¢vÆæRrÀ¢FF§°¢Æ&VÇ3¦7VÔÆ&VÇ2À¢FF6WG3¥°¢¶Æ&VÃ¢uF÷ÊN¹ëRrÆFF¤5TÒçF÷Æ&÷&FW$6öÆ÷#¢r3#rÆ&6¶w&÷VæD6öÆ÷#¢w&v&bÃRÃ#ÃãrÆfÆÃ§G'VRÇFVç6öã£ã2Æ&÷&FW%vGF£2ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢u2eSrÆFF¤5TÒç7SÆ&÷&FW$6öÆ÷#¢r36#&cbrÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢~¸)ÈªN¸ºRrÆFF¤5TÒææ6FÆ&÷&FW$6öÆ÷#¢r3#V6cbrÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢~¸ºNÉ«ÊNÈªBrÆFF¤5TÒæF÷rÆ&÷&FW$6öÆ÷#¢r6cSS"rÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢Ð¢ÒÀ¢÷Föç3§²ââæ6'DFVfVÇG2Â66ÆW3§²ââæ6'DFVfVÇG2ç66ÆW2Â§²ââæ6'DFVfVÇG2ç66ÆW2çÂF6·3§²ââæ6'DFVfVÇG2ç66ÆW2ççF6·2Â6ÆÆ&6³§cÓçb²rRw×××Ð¢Ò° ¢òòV&Ç&WGW&ç2& ¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'BwV&Ç&WGW&ä6'BrÂ°¢GS¢v&"rÀ¢FF§°¢Æ&VÇ3¥T%2À¢FF6WG3¥°¢¶Æ&VÃ¢uF÷rÆFF¤$4µDU5BçF÷Æ&6¶w&÷VæD6öÆ÷#¢r3#62wÒÀ¢¶Æ&VÃ¢u2eSrÆFF¤$4µDU5Bç7SÆ&6¶w&÷VæD6öÆ÷#¢r36#&cf62wÒÀ¢¶Æ&VÃ¢~¸)ÈªN¸ºSrÆFF¤$4µDU5Bææ6FÆ&6¶w&÷VæD6öÆ÷#¢r3#V6cf62wÒÀ¢¶Æ&VÃ¢~¸ºNÉ«ÊNÈªBrÆFF¤$4µDU5BæF÷rÆ&6¶w&÷VæD6öÆ÷#¢r6cSS&62wÒÀ¢Ð¢ÒÀ¢÷Föç3§²ââæ6'DFVfVÇG2Â66ÆW3§²ââæ6'DFVfVÇG2ç66ÆW2Â§²ââæ6'DFVfVÇG2ç66ÆW2çÂF6·3§²ââæ6'DFVfVÇG2ç66ÆW2ççF6·2Â6ÆÆ&6³§cÓçb²rRw×××Ð¢Ò° ¢òò´õ56ö×&P¢æWr6'BFö7VÖVçBævWDVÆVÖVçD'Bv¶÷76ö×&T6'BrÂ°¢GS¢vÆæRrÀ¢FF§°¢Æ&VÇ3¦7VÔÆ&VÇ2À¢FF6WG3¥°¢¶Æ&VÃ¢uF÷ÊN¹ëRrÆFF¤5TÒçF÷Æ&÷&FW$6öÆ÷#¢r3#rÇFVç6öã£ã2Æ&÷&FW%vGF£2ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢u2eSrÆFF¤5TÒç7SÆ&÷&FW$6öÆ÷#¢r36#&cbrÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢~¸)ÈªN¸ºRrÆFF¤5TÒææ6FÆ&÷&FW$6öÆ÷#¢r3#V6cbrÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢~¸ºNÉ«ÊNÈªBrÆFF¤5TÒæF÷rÆ&÷&FW$6öÆ÷#¢r6cSS"rÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£7ÒÀ¢¶Æ&VÃ¢t´õ5rÆFF¤5TÒæ¶÷7Æ&÷&FW$6öÆ÷#¢r3f#fCBrÇFVç6öã£ã2Æ&÷&FW%vGF£"ÇöçE&FW3£2Æ&÷&FW$F6¥³RÃU×ÒÀ¢Ð¢ÒÀ¢÷Föç3§²ââæ6'DFVfVÇG2Â66ÆW3§²ââæ6'DFVfVÇG2ç66ÆW2Â§²ââæ6'DFVfVÇG2ç66ÆW2çÂF6·3§²ââæ6'DFVfVÇG2ç66ÆW2ççF6·2Â6ÆÆ&6³§cÓçb²rRw×××Ð¢Ò°§Ð ¢òòÓÓÓÓÒädtDôâÓÓÓÓÐ¦gVæ7Föâ6÷u6V7FöâB°¢Fö7VÖVçBçVW'6VÆV7F÷$ÆÂrç6V7Föâræf÷$V63Óç2æ6Æ74Æ7Bç&VÖ÷fRv7FfRr°¢Fö7VÖVçBævWDVÆVÖVçD'BBæ6Æ74Æ7BæFBv7FfRr°¢Fö7VÖVçBçVW'6VÆV7F÷$ÆÂrææb×F"ræf÷$V6CÓçBæ6Æ74Æ7Bç&VÖ÷fRv7FfRr°¢WfVçBçF&vWBæ6Æ74Æ7BæFBv7FfRr°§Ð ¢òòÓÓÓÓÒäõDd4DôâÓÓÓÓÐ¦gVæ7Föâ6Æ÷6Tæ÷Ff6Föâ°¢Fö7VÖVçBævWDVÆVÖVçD'Bvæ÷Ff6Föä&"ræ6Æ74Æ7Bç&VÖ÷fRw6÷rr°§Ð¦gVæ7Föâ6÷tæ÷Ff6FöâFWB°¢Fö7VÖVçBævWDVÆVÖVçD'Bvæ÷Ff6FöåFWBrçFWD6öçFVçBÒFWC°¢Fö7VÖVçBævWDVÆVÖVçD'Bvæ÷Ff6Föä&"ræ6Æ74Æ7BæFBw6÷rr°§Ð¦gVæ7FöâFövvÆTÆW'B°¢bFö7VÖVçBævWDVÆVÖVçD'BvÆW'DVæ&ÆVBræ6V6¶VBbbtæ÷Ff6FöârâvæF÷r°¢æ÷Ff6Föâç&WVW7EW&Ö76öâ°¢Ð§Ð ¢òòÓÓÓÓÒ4Äô4²ÓÓÓÓÐ¦gVæ7FöâWFFT6Æö6²°¢6öç7Bæ÷rÒæWrFFR°¢6öç7B÷G2Ò·V#¢vçVÖW&2rÆÖöçF¢s"ÖFvBrÆF¢s"ÖFvBrÆ÷W#¢s"ÖFvBrÆÖçWFS¢s"ÖFvBrÇ6V6öæC¢s"ÖFvBrÆ÷W##¦fÇ6WÓ°¢Fö7VÖVçBævWDVÆVÖVçD'BvæeFÖRrçFWD6öçFVçBÒæ÷rçFôÆö6ÆU7G&ærv¶òÔµ"rÆ÷G2°§Ð ¢òòÓÓÓÓÒ4ÕTÄDTBDÅ4T4²ÓÓÓÓÐ¦gVæ7Föâ6×VÆFTFÇ6V6²°¢òòâ&öGV7FöâÂF2v÷VÆB6ÆÂ&VÂ¢6öç6öÆRæÆör	ù8¢ÉÛÎÉÛÂÈ¹Î«ËIÞÉZÈÎÉÈBË+NØÂÈºNÙhâââr°¢òò6V6²bç6ö×çG&÷VB&VÆ÷rF&W6öÆ@¢6öç7BvF66ö×çÒDõôDDµDõôDDæÆVæwFÒÓ°¢bvF66ö×çæÖ&¶WD6Âã°¢6÷tæ÷Ff6Föâ)ªûò«+Þ«:¢G·vF66ö×çææÖWÒG·vF66ö×ççF6¶W'ÒÉÙÈ¹Î«ËIÞÉZÉÛBBG·vF66ö×çæÖ&¶WD6ÕNºÂÉÈB«+Þ«8NÈJÉy«{ÎÊ	ÙZ¸¸¸ºBæ°¢btæ÷Ff6FöârâvæF÷rbbæ÷Ff6FöâçW&Ö76öâÓÓÒvw&çFVBr°¢æWræ÷Ff6Föâ	ù8¢F÷ØÎÉéÈ¹ÎÈªNØYÂÉXÎºkÂrÂ°¢&öG¢G·vF66ö×çææÖWÞÉÛBÉÈB«+Þ«8NÈJÉy«{ÎÊ	ÙZ¸¸¸ºBâÈ¹Î«ËIÞÉZ¢BG·vF66ö×çæÖ&¶WD6ÕFÀ¢6öã¢	ù8¢p¢Ò°¢Ð¢Ð§Ð ¢òòÓÓÓÓÒäBÓÓÓÓÐ¦Fö7VÖVçBæFDWfVçDÆ7FVæW"tDôÔ6öçFVçDÆöFVBrÂÓâ°¢&VæFW$µ°¢&VæFW$ÖåF&ÆR°¢&VæFW$WFVB°¢&VæFW$Gf6U7VÖÖ'°¢&VæFW$FWFÄ6&G2°¢&VæFW$ÆW'G2°¢&VæFW$Gf6R°¢&VæFW$6'G2°¢WFFT6Æö6²°¢6WDçFW'fÂWFFT6Æö6²Â° ¢òò6÷ræ÷Ff6FöâgFW"26V6öæG0¢6WEFÖV÷WBÓâ°¢6÷tæ÷Ff6Föâ~)ªûò&W&·6&RFv%$²ä"«ÉÈB«+Þ«8NÈJÉy«{ÎÊ	ÙZ¸¸¸ºBâE4Ô>ÉÉÙÈ¹Î«ËIÞÉZË
-ÉÛC¢rRºûºxÂr°¢ÒÂ3° ¢òò6×VÆFRFÇ6V6²WfW'÷W"â&öGV7Föã¢W6R6Æ÷VFfÆ&R7&öâ¢6WDçFW'fÂ6×VÆFTFÇ6V6²Â3c° ¢òò&WVW7Bæ÷Ff6FöâW&Ö76öà¢btæ÷Ff6FöârâvæF÷r°¢æ÷Ff6Föâç&WVW7EW&Ö76öâ°¢Ð§Ò°£Â÷67&Cà£Âö&öGà£ÂöFÖÃà
+  { ticker:"JPM", name:"JP Morgan Chase", reason:"금융업 규제 강화 우려와 AI 기업으로의 자금 이동으로 시가총액 하락. 2025년 4분기 대비 약 8% 감소.", date:"2026-02-15", marketCap:"$0.93T" },
+  { ticker:"LLY", name:"Eli Lilly", reason:"비만치료제 경쟁 심화(노보노디스크 등)와 FDA 규제 리스크로 시가총액 조정. 최고점 대비 15% 하락.", date:"2026-01-20", marketCap:"$0.89T" },
+];
+
+// Backtest data (simulated annual returns 2016-2026)
+const YEARS = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026 YTD'];
+const BACKTEST = {
+  top10:   [18.5, 42.3, -2.1, 38.2, 52.1, 33.4, -28.5, 68.2, 42.1, 35.2, -5.3],
+  sp500:   [12.0, 21.8, -4.4, 31.5, 18.4, 28.7, -18.1, 26.3, 25.0, 23.3, -5.3],
+  nasdaq:  [7.1, 32.7, -0.3, 39.0, 48.9, 27.5, -32.4, 55.1, 25.6, 28.4, -7.2],
+  dow:     [16.5, 28.1, -3.5, 25.3, 9.7, 21.0, -6.9, 16.2, 15.0, 17.5, -4.1],
+  kospi:   [3.3, 21.8, -17.3, 7.7, 30.8, 3.6, -24.9, 18.7, -9.6, 7.2, 2.1],
+};
+
+function cumulativeReturns(arr) {
+  let cum = [100];
+  for (let i = 0; i < arr.length; i++) {
+    cum.push(cum[cum.length-1] * (1 + arr[i]/100));
+  }
+  return cum;
+}
+
+const CUM = {};
+Object.keys(BACKTEST).forEach(k => CUM[k] = cumulativeReturns(BACKTEST[k]));
+
+const HISTORY_EVENTS = [
+  { date:"2026-02-15", desc:"JP Morgan Chase (JPM) → 10위 밖 탈락, Walmart (WMT) 진입", action:"JPM 전량 매도 → WMT 동일 금액 매수", status:"완료" },
+  { date:"2026-01-20", desc:"Eli Lilly (LLY) → 10위 밖 탈락, Berkshire Hathaway (BRK.B) 진입", action:"LLY 전량 매도 → BRK.B 동일 금액 매수", status:"완료" },
+  { date:"2025-11-05", desc:"Samsung(TSMC 교체 없음) → 순위 변동 없음", action:"조치 불필요", status:"확인" },
+  { date:"2025-08-12", desc:"Berkshire Hathaway (BRK.B) → 10위 밖 탈락, Broadcom (AVGO) 진입", action:"BRK.B 전량 매도 → AVGO 동일 금액 매수", status:"완료" },
+  { date:"2025-03-01", desc:"Tesla (TSLA) → 10위 밖 탈락 후 재진입", action:"TSLA 매도 후 재매수 (변동성 주의)", status:"완료" },
+];
+
+const SECTOR_COLORS = {
+  "반도체":"#76b900","소비자 전자":"#a2aaad","인터넷 서비스":"#4285f4",
+  "소프트웨어":"#00a4ef","이커머스/클라우드":"#ff9900","전길차/에너지":"#e31937",
+  "소셜미디어":"#0668e1","유통/리테일":"#0071ce","금융/지주회사":"#2d1a47"
+};
+
+// ===== RENDER FUNCTIONS =====
+function renderKPI() {
+  const totalMC = TOP10_DATA.reduce((s,c)=>s+c.marketCap,0);
+  const avgPER = (TOP10_DATA.reduce((s,c)=>s+c.per,0)/TOP10_DATA.length).toFixed(1);
+  const html = `
+    <div class="card stat-card"><div class="stat-value" style="background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$${totalMC.toFixed(1)}T</div><div class="stat-label">총 시가총액</div></div>
+    <div class="card stat-card"><div class="stat-value" style="color:var(--accent-green);">10</div><div class="stat-label">Top 10 기업 수</div></div>
+    <div class="card stat-card"><div class="stat-value" style="color:var(--accent-yellow);">${avgPER}x</div><div class="stat-label">평균 PER</div></div>
+    <div class="card stat-card"><div class="stat-value" style="color:var(--accent-purple);">+842%</div><div class="stat-label">10년 누적수익률</div></div>
+  `;
+  document.getElementById('kpiCards').innerHTML = html;
+}
+
+function renderMainTable() {
+  let html = '';
+  TOP10_DATA.forEach(c => {
+    const rankClass = c.rank <= 3 ? `rank-${c.rank}` : 'rank-other';
+    html += `<tr>
+      <td><span class="rank-badge ${rankClass}">${c.rank}</span></td>
+      <td><span class="ticker">${c.ticker}</span></td>
+      <td><span class="company-name">${c.name}</span></td>
+      <td><strong>$${c.marketCap}T</strong></td>
+      <td><span class="sector-badge" style="background:${c.color}22;color:${c.color};">${c.sector}</span></td>
+      <td>${c.revenue}</td>
+      <td>${c.profit}</td>
+      <td>${c.debtRatio}</td>
+      <td class="${parseFloat(c.roe)>25?'positive':''}">${c.roe}</td>
+      <td>${c.per}</td>
+      <td>${c.dividend}</td>
+    </tr>`;
+  });
+  document.getElementById('mainTableBody').innerHTML = html;
+}
+
+function renderExited() {
+  let html = '';
+  if (EXITED_COMPANIES.length === 0) {
+    html = '<div class="alert-box alert-success"><span class="alert-icon">✅</span><div class="alert-content"><h4>현재 탈락 기업 없음</h4><p>모든 Top 10 기업이 안정적으로 순위를 유지하고 있습니다.</p></div></div>';
+  } else {
+    EXITED_COMPANIES.forEach(c => {
+      html += `<div class="alert-box alert-danger">
+        <span class="alert-icon">📉</span>
+        <div class="alert-content">
+          <h4>${c.ticker} — ${c.name} (탈락일: ${c.date})</h4>
+          <p><strong>시가총액:</strong> ${c.marketCap} | <strong>사유:</strong> ${c.reason}</p>
+        </div>
+      </div>`;
+    });
+  }
+  document.getElementById('exitedCompanies').innerHTML = html;
+}
+
+function renderAdviceSummary() {
+  const html = `
+    <div class="advice-card">
+      <h3>📌 핵시 요약</h3>
+      <p>현재 Top 10 기업의 핵심은 <strong>AI 인프라</strong>입니다. NVIDIA, Broadcom 등 반도체 기업이 강세를 보이고 있으며,
+      빅테크 기업들의 AI 투자 확대가 이 추세를 뒴밯침합니다. 다만 PER이 높은 Tesla(125배)와 Walmart(41배)는
+      기대감이 과도할 수 있어 주의가 필요합니다.</p>
+      <span class="tag" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">AI 반도체 강세</span>
+      <span class="tag" style="background:rgba(59,130,246,0.15);color:var(--accent-blue);">클라우드 성장</span>
+      <span class="tag" style="background:rgba(245,158,11,0.15);color:var(--accent-yellow);">고PER 주의</span>
+    </div>
+    <div class="advice-card">
+      <h3>⚖️ 리스크 포인트</h3>
+      <p>Apple 부채비율 134%로 Top 10 중 최고. Broadcom도 VMware 인수 후 105%로 높은 편.
+      금리 인하 지연 시 부채 부담 확대 가능성. Tesla는 PER 125배로 실저 기대치가 매우 높아
+      하방 리스크에 유의해야 합니다.</p>
+    </div>
+  `;
+  document.getElementById('adviceSummary').innerHTML = html;
+}
+
+function renderDetailCards() {
+  let html = '';
+  TOP10_DATA.forEach(c => {
+    html += `<div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div>
+          <span class="rank-badge ${c.rank<=3?'rank-'+c.rank:'rank-other'}" style="margin-right:10px;">${c.rank}</span>
+          <span class="ticker" style="font-size:16px;">${c.ticker}</span>
+          <span class="company-name" style="margin-left:8px;font-size:16px;">${c.name}</span>
+        </div>
+        <span class="sector-badge" style="background:${c.color}22;color:${c.color};">${c.sector}</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;">${c.desc}</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;">
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">시가총액</div>
+          <div style="font-weight:700;">$${c.marketCap}T</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">매출</div>
+          <div style="font-weight:700;">${c.revenue}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">순이익</div>
+          <div style="font-weight:700;">${c.profit}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">부채비율</div>
+          <div style="font-weight:700;${parseFloat(c.debtRatio)>100?'color:var(--accent-red)':''}">${c.debtRatio}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">ROE</div>
+          <div style="font-weight:700;color:var(--accent-green);">${c.roe}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">PER</div>
+          <div style="font-weight:700;${c.per>50?'color:var(--accent-red)':''}">${c.per}x</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">배당률</div>
+          <div style="font-weight:700;">${c.dividend}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('detailCards').innerHTML = html;
+}
+
+function renderAlerts() {
+  let html = '';
+  const alerts = [
+    { type:'warning', icon:'⚠️', title:'순위 근접 감시 대상', msg:'Berkshire Hathaway(10위)와 TSMC($0.98T)의 시가총액 차이가 7% 미만입니다. 교체 가능성을 모니터링 중입니다.' },
+    { type:'info', icon:'📊', title:'일인 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발송합니다.' },
+    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런싱 완료.' },
+    { type:'success', icon:'✅', title:'2026-01-20 리밸런싱 완료', msg:'Eli Lilly 매도 → Berkshire Hathaway 매수 완료. 동일 금액 배분 적용.' },
+  ];
+  alerts.forEach(a => {
+    html += `<div class="alert-box alert-${a.type}"><span class="alert-icon">${a.icon}</span><div class="alert-content"><h4>${a.title}</h4><p>${a.msg}</p></div></div>`;
+  });
+  document.getElementById('alertList').innerHTML = html;
+
+  let histHtml = '';
+  HISTORY_EVENTS.forEach(e => {
+    histHtml += `<tr><td>${e.date}</td><td>${e.desc}</td><td style="font-size:12px;">${e.action}</td><td><span class="sector-badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">${e.status}</span></td></tr>`;
+  });
+  document.getElementById('historyTableBody').innerHTML = histHtml;
+}
+
+function renderAdvice() {
+  const advices = [
+    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동이가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익량 달성했습니다. 핵쌴은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
+    { icon:'📈', title:'현재 시장 전망', text:'AI 인프라 사이클이 본격화되면서 반도체· 클라우드 기업이 상위권을 지배하고 있습니다. NVIDIA z�RH;ef;"�;&�H�H:��{($;%�;g�;%�{%�{'!:�o;'(;)�;)${'m:�l[X�];'f;%l{)�;'m:�";%�:�b���:���:��:������a;-";(l;(%{!.:� :�;`�:�:��;'�;%�:��:�,;( H:��:��{!,{%�;(�;'f:� ;ea;&�;ej니다.' },
+    { icon:'⚠️', title:'리스크 관리', text:'이 전랴의 약점은 대형주 집중 리스크와 교체 시점의 거래비용입니다. 특히 Tesla(PER 125x)처럼 기대감이 극도로 반영된 종목이 급락하면 포트폴리오 타격이 클니다. 각 종목 10% 균등배분으로 리스크를 분산하되, 부채비율이 높은 Apple(134%), Broadcom(105%)의 재무건전성을 주시하세요.' },
+    { icon:'💎', title:'핵시 투자 포인트', text:'① Alphabet — PER 22.8배로 빅테크 중 가장 저평가. AI 검색 전환 성공 시 추가 상승 여력. ② Berkshire — PER 10.2배, 현금 보유량 최대. 방어적 성격 + 밸륐에이션 매력. ③ NVIDIA — AI 사이클 핵시 수혜주이나 곡평가 구간 진입. 실적이 기대에 미치지 못할 경우 급락 가능.' },
+    { icon:'🔄', title:'리밸런싱 가이드', text:'10위 밖으로 나가는 기업 발생 시: ① 해당 기업 전량 매도 → ② 신규 진입 기업을 동일 금액으로 매수 → ③ 매달 1회 전체 포트폴리오 균듳 리밴런싱 권장. 거래비용을 전이기 위해 시장가 주문보다 지정가 주문을 활용하세요.' },
+  ];
+  let html = '';
+  advices.forEach(a => {
+    html += `<div class="advice-card"><h3>${a.icon} ${a.title}</h3><p>${a.text}</p></div>`;
+  });
+  document.getElementById('adviceCards').innerHTML = html;
+}
+
+// ===== CHARTS =====
+const chartDefaults = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { labels: { color:'#94a3b8', font:{size:11} } } },
+  scales: {
+    x: { ticks:{color:'#64748b',font:{size:10}}, grid:{color:'rgba(45,55,72,0.5)'} },
+    y: { ticks:{color:'#64748b',font:{size:10}}, grid:{color:'rgba(45,55,72,0.5)'} }
+  }
+};
+
+function renderCharts() {
+  // Market Cap Bar
+  new Chart(document.getElementById('marketCapChart'), {
+    type: 'bar',
+    data: {
+      labels: TOP10_DATA.map(c=>c.ticker),
+      datasets: [{
+        label: '시가총액 (조 달러)',
+        data: TOP10_DATA.map(c=>c.marketCap),
+        backgroundColor: TOP10_DATA.map(c=>c.color+'cc'),
+        borderRadius: 6,
+      }]
+    },
+    options: { ...chartDefaults, plugins:{ ...chartDefaults.plugins, legend:{display:false}} }
+  });
+
+  // Sector Pie
+  const sectorMap = {};
+  TOP10_DATA.forEach(c => { sectorMap[c.sector] = (sectorMap[c.sector]||0) + c.marketCap; });
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(sectorMap),
+      datasets: [{
+        data: Object.values(sectorMap),
+        backgroundColor: Object.keys(sectorMap).map(s=>SECTOR_COLORS[s]||'#666'),
+        borderWidth: 0,
+      }]
+    },
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'right', labels:{color:'#94a3b8',font:{size:10},padding:8} } }
+    }
+  });
+
+  // Mini Compare (1yr)
+  const last12 = ['4월','5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월'];
+  const gen1yr = (base,vol) => {
+    let v=[base]; for(let i=1;i<12;i++) v.push(v[i-1]*(1+(Math.random()-0.45)*vol));
+    return v.map(x=>+(x).toFixed(1));
+  };
+  new Chart(document.getElementById('miniCompareChart'), {
+    type:'line',
+    data:{
+      labels:last12,
+      datasets:[
+        {label:'Top10 전략',data:gen1yr(100,0.08),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.3,pointRadius:2},
+        {label:'S&P 500',data:gen1yr(100,0.05),borderColor:'#3b82f6',tension:0.3,pointRadius:2},
+        {label:'나스닥100',data:gen1yr(100,0.07),borderColor:'#8b5cf6',tension:0.3,pointRadius:2},
+        {label:'KOSPI',data:gen1yr(100,0.06),borderColor:'#06b6d4',tension:0.3,pointRadius:2},
+      ]
+    },
+    options:chartDefaults
+  });
+
+  // Backtest Cumulative
+  const cumLabels = ['2015말',...YEARS];
+  new Chart(document.getElementById('backtestChart'), {
+    type:'line',
+    data:{
+      labels:cumLabels,
+      datasets:[
+        {label:'Top10 전략',data:CUM.top10,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.08)',fill:true,tension:0.3,borderWidth:3,pointRadius:3},
+        {label:'S&P 500',data:CUM.sp500,borderColor:'#3b82f6',tension:0.3,borderWidth:2,pointRadius:3},
+        {label:'나스닥 100',data:CUM.nasdaq,borderColor:'#8b5cf6',tension:0.3,borderWidth:2,pointRadius:3},
+        {label:'다우존스',data:CUM.dow,borderColor:'#f59e0b',tension:0.3,borderWidth:2,pointRadius:3},
+      ]
+    },
+    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
+  });
+
+  // Yearly Returns Bar
+  new Chart(document.getElementById('yearlyReturnChart'), {
+    type:'bar',
+    data:{
+      labels:YEARS,
+      datasets:[
+        {label:'Top10',data:BACKTEST.top10,backgroundColor:'#10b981cc'},
+        {label:'S&P 500',data:BACKTEST.sp500,backgroundColor:'#3b82f6cc'},
+        {label:'나스닥100',data:BACKTEST.nasdaq,backgroundColor:'#8b5cf6cc'},
+        {label:'다우존스',data:BACKTEST.dow,backgroundColor:'#f59e0bcc'},
+      ]
+    },
+    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
+  });
+
+  // KOSPI Compare
+  new Chart(document.getElementById('kospiCompareChart'), {
+    type:'line',
+    data:{
+      labels:cumLabels,
+      datasets:[
+        {label:'Top10 전략',data:CUM.top10,borderColor:'#10b981',tension:0.3,borderWidth:3,pointRadius:3},
+        {label:'S&P 500',data:CUM.sp500,borderColor:'#3b82f6',tension:0.3,borderWidth:2,pointRadius:3},
+        {label:'나스닥 100',data:CUM.nasdaq,borderColor:'#8b5cf6',tension:0.3,borderWidth:2,pointRadius:3},
+        {label:'다우존스',data:CUM.dow,borderColor:'#f59e0b',tension:0.3,borderWidth:2,pointRadius:3},
+        {label:'KOSPI',data:CUM.kospi,borderColor:'#06b6d4',tension:0.3,borderWidth:2,pointRadius:3,borderDash:[5,5]},
+      ]
+    },
+    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
+  });
+}
+
+// ===== NAVIGATION =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// ===== NOTIFICATION =====
+function closeNotification() {
+  document.getElementById('notificationBar').classList.remove('show');
+}
+function showNotification(text) {
+  document.getElementById('notificationText').textContent = text;
+  document.getElementById('notificationBar').classList.add('show');
+}
+function toggleAlert() {
+  if (document.getElementById('alertEnabled').checked && 'Notification' in window) {
+    Notification.requestPermission();
+  }
+}
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const opts = {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+  document.getElementById('navTime').textContent = now.toLocaleString('ko-KR',opts);
+}
+
+// ===== SIMULATED DAILY CHECK =====
+function simulateDailyCheck() {
+  // In production, this would call a real API
+  console.log('📊 일일 시가총액 순위 체크 실행...');
+  // Check if any company dropped below threshold
+  const watchCompany = TOP10_DATA[TOP10_DATA.length - 1];
+  if (watchCompany.marketCap < 1.1) {
+    showNotification(`⚠️ 경고: ${watchCompany.name} (${watchCompany.ticker})의 시가총액이 $${watchCompany.marketCap}T로 10위 경계선에 근접합니다.`);
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('📊 Top10 투자시스템 알림', {
+        body: `${watchCompany.name}이 10위 경계선에 근접합니다. 시가총액: $${watchCompany.marketCap}T`,
+        icon: '📊'
+      });
+    }
+  }
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderKPI();
+  renderMainTable();
+  renderExited();
+  renderAdviceSummary();
+  renderDetailCards();
+  renderAlerts();
+  renderAdvice();
+  renderCharts();
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Show notification after 3 seconds
+  setTimeout(() => {
+    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가총액 차이: 7% 미만');
+  }, 3000);
+
+  // Simulate daily check every hour (in production: use Cloudflare Cron)
+  setInterval(simulateDailyCheck, 3600000);
+
+  // Request notification permission
+  if ('Notification' in window) {
+    Notification.requestPermission();
+  }
+});
+</script>
+</body>
+</html>
