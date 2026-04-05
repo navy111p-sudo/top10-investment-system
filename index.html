@@ -104,7 +104,16 @@ body {
 /* === TABLE === */
 .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 20px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }t(135deg, #c0c0c0, #a0a0a0); color: #000; }
+th { background: var(--bg-secondary); color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+tr:hover td { background: rgba(59,130,246,0.05); }
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  font-weight: 800; font-size: 14px;
+}
+.rank-1 { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+.rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
 .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
 .rank-other { background: var(--bg-secondary); color: var(--text-secondary); }
 .ticker { color: var(--accent-blue); font-weight: 700; font-size: 13px; }
@@ -240,7 +249,7 @@ th { background: var(--bg-secondary); color: var(--text-secondary); font-weight:
       <thead>
         <tr>
           <th>순위</th><th>티커</th><th>기업명</th><th>시가총액</th><th>업종</th>
-          <th>매출</th><th>순이익</th><th>부채비율</th><th>ROE</th><th>PER</th><th>배당률</th>
+          <th>매출</th><th>숬이익</th><th>부채비율</th><th>ROE</th><th>PER</th><th>배당률</th>
         </tr>
       </thead>
       <tbody id="mainTableBody"></tbody>
@@ -273,7 +282,7 @@ th { background: var(--bg-secondary); color: var(--text-secondary); font-weight:
 
   <!-- Performance Comparison Mini Chart -->
   <div class="card" style="margin-top:16px;">
-    <h3 style="font-size:15px; margin-bottom:12px;">📊 전략 vs 지수 비교 (최근 1년)</h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">📊 전띵 vs 지수 비교 (최근 1년)</h3>
     <div class="chart-container" style="height:300px;">
       <canvas id="miniCompareChart"></canvas>
     </div>
@@ -324,7 +333,7 @@ th { background: var(--bg-secondary); color: var(--text-secondary); font-weight:
   </div>
 
   <div class="card">
-    <h3 style="font-size:15px; margin-bottom:12px;">KOSPI 포합 비교</h3>
+    <h3 style="font-size:15px; margin-bottom:12px;">KOSPI 포함 비교</h3>
     <div class="chart-container">
       <canvas id="kospiCompareChart"></canvas>
     </div>
@@ -339,7 +348,7 @@ th { background: var(--bg-secondary); color: var(--text-secondary); font-weight:
   <div class="card" style="margin-top:20px;">
     <h3 style="font-size:15px; margin-bottom:12px;">⚙️ 알림 설정</h3>
     <p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
-      시가총액 10위 밖으로 나가는 기업이 감지되면 자동으로 알림을 보넅니다.
+      시가총액 10위 밖으로 나가는 기업이 감지되면 자동으로 알림을 보냅니다.
     </p>
     <div style="display:flex; gap:12px; flex-wrap:wrap;">
       <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
@@ -379,39 +388,39 @@ th { background: var(--bg-secondary); color: var(--text-secondary); font-weight:
 const TOP10_DATA = [
   { rank:1, ticker:"NVDA", name:"NVIDIA", marketCap:4.37, sector:"반도체", sectorEn:"Semiconductors", color:"#76b900",
     revenue:"1,306억$", profit:"708억$", debtRatio:"29%", roe:"111%", per:38.2, dividend:"0.03%",
-    desc:"AI 반도체 절대 강자. GPU 및 데이터센터 칩 시장 독점적 지위. AI 인프라 수요 폭증으로 매출·이익 모두 사상 최대." },
+    desc:"AI 반도체 절대 강자. GPU 및 데이터 센터 칩 시장 독저적 지위. AI 인프라 수옔 폭즼으로 매출·이익 모두 사상 최대." },
   { rank:2, ticker:"AAPL", name:"Apple", marketCap:3.77, sector:"소비자 전자", sectorEn:"Consumer Electronics", color:"#a2aaad",
     revenue:"4,128억$", profit:"1,084억$", debtRatio:"134%", roe:"169%", per:34.5, dividend:"0.44%",
-    desc:"아이폰·맥·서비스 생태계. 서비스 매출 비중 확대로 마진 개선. 자사주 매입 적극적이나 부채비율 다소 높음." },
+    desc:"아이폰·왍·서비스 생태계. 서비스 매출 비줐 화대로 마진 개선. 자사주 매입적극적이나 부채비율 다소 높음." },
   { rank:3, ticker:"GOOGL", name:"Alphabet", marketCap:3.65, sector:"인터넷 서비스", sectorEn:"Internet Services", color:"#4285f4",
     revenue:"3,747억$", profit:"1,002억$", debtRatio:"9%", roe:"33%", per:22.8, dividend:"0.45%",
-    desc:"구글 검색·유튜브·클라우드. AI 기술 선도 기업. 클림 밝런스시트에 영업이익률 30% 이상 유지." },
+    desc:"구글 검색·유튜브·클라우드. AI 기술 선도 기업. 클라 배런스시트에 영업이익률 30% 이상 유지." },
   { rank:4, ticker:"MSFT", name:"Microsoft", marketCap:3.01, sector:"소프트웨어", sectorEn:"Software", color:"#00a4ef",
     revenue:"2,700억$", profit:"905억$", debtRatio:"42%", roe:"38%", per:31.5, dividend:"0.72%",
-    desc:"Azure 클라우드·Office 365·AI Copilot. 기업용 소프트웨어 강자. 안정적 수익 구조에 배당도 꾸준히 인상." },
+    desc:"Azure 클라우드·Office 365·AI Copilot. 기업용 소프트웨어 강자. 안정적 수익 구조에 배당도 꾸�t히 인상." },
   { rank:5, ticker:"AMZN", name:"Amazon", marketCap:2.25, sector:"이커머스/클라우드", sectorEn:"E-commerce/Cloud", color:"#ff9900",
     revenue:"6,380억$", profit:"592억$", debtRatio:"58%", roe:"23%", per:35.1, dividend:"0%",
     desc:"AWS 클라우드 1위·글로벌 이커머스. AI 서비스 확대. 매출 규모 최대이나 무배당 정책 유지." },
   { rank:6, ticker:"AVGO", name:"Broadcom", marketCap:1.57, sector:"반도체", sectorEn:"Semiconductors", color:"#cc092f",
     revenue:"560억$", profit:"175억$", debtRatio:"105%", roe:"15%", per:35.8, dividend:"1.05%",
     desc:"네트워크·반도체·인프라 소프트웨어. VMware 인수 후 사업 다각화. AI 네트워킵 칩 수요 급증." },
-  { rank:7, ticker:"TSLA", name:"Tesla", marketCap:1.57, sector:"전길차/에너지", sectorEn:"EV/Energy", color:"#e31937",
+  { rank:7, ticker:"TSLA", name:"Tesla", marketCap:1.57, sector:"전기차/에너지", sectorEn:"EV/Energy", color:"#e31937",
     revenue:"1,152억$", profit:"126億$", debtRatio:"18%", roe:"20%", per:125.0, dividend:"0%",
-    desc:"EV·자율주행·에너지 저장. PER 극도로 높아 성장 기대 반영. 로보택시·AI 전략이 핵시 변수." },
+    desc:"EV·자욼주행·에너지 저장. PER 극도로 높아 성장 기대 반영. 로보택시·AI 전략이 핵심 변수." },
   { rank:8, ticker:"META", name:"Meta Platforms", marketCap:1.42, sector:"소셜미디어", sectorEn:"Social Media", color:"#0668e1",
     revenue:"1,648억$", profit:"620억$", debtRatio:"28%", roe:"36%", per:22.5, dividend:"0.35%",
-    desc:"페이스북·인스타그램·WhatsApp. 광고 매출 회복 + Reality Labs 투자. 순이익률 37% 초고수익 구조." },
+    desc:"페이스북·인스타그램·WhatsApp. 광고 매출 회복 + Reality Labs 투자. 순익익률 37% 초고수익 구조." },
   { rank:9, ticker:"WMT", name:"Walmart", marketCap:1.07, sector:"유통/리테일", sectorEn:"Retail", color:"#0071ce",
     revenue:"6,810억$", profit:"208억$", debtRatio:"52%", roe:"20%", per:41.2, dividend:"0.87%",
     desc:"세계 최대 소매업체. 52년 연속 배당 인상 'Dividend King'. 이커머스 성장으로 새로운 활력." },
   { rank:10, ticker:"BRK.B", name:"Berkshire Hathaway", marketCap:1.05, sector:"금융/지주회사", sectorEn:"Financials/Conglomerate", color:"#2d1a47",
     revenue:"3,710억$", profit:"968억$", debtRatio:"25%", roe:"18%", per:10.2, dividend:"0%",
-    desc:"워렌 버핏의 투자 지주회사. 보험·에너지·철도 등 다각화. PER 10배로 밼류에이션 매력적." }
+    desc:"워렌 버핏의 투자 지주회사. 보험·에너지·철도 등 다각화. PER 10배로 밸류에이션 매력적." }
 ];
 
 const EXITED_COMPANIES = [
   { ticker:"JPM", name:"JP Morgan Chase", reason:"금융업 규제 강화 우려와 AI 기업으로의 자금 이동으로 시가총액 하락. 2025년 4분기 대비 약 8% 감소.", date:"2026-02-15", marketCap:"$0.93T" },
-  { ticker:"LLY", name:"Eli Lilly", reason:"비만치료제 경쟁 심화(노보노디스크 등)와 FDA 규제 리스크로 시가총액 조정. 최고점 대비 15% 하락.", date:"2026-01-20", marketCap:"$0.89T" },
+  { ticker:"LLY", name:"Eli Lilly", reason:"비만치료제 경쟁 심화(노보노딘스크 등)와 FDA 규제 리스크로 시가총액 조정. 최고점 대비 15% 하락.", date:"2026-01-20", marketCap:"$0.89T" },
 ];
 
 // Backtest data (simulated annual returns 2016-2026)
@@ -438,14 +447,14 @@ Object.keys(BACKTEST).forEach(k => CUM[k] = cumulativeReturns(BACKTEST[k]));
 const HISTORY_EVENTS = [
   { date:"2026-02-15", desc:"JP Morgan Chase (JPM) → 10위 밖 탈락, Walmart (WMT) 진입", action:"JPM 전량 매도 → WMT 동일 금액 매수", status:"완료" },
   { date:"2026-01-20", desc:"Eli Lilly (LLY) → 10위 밖 탈락, Berkshire Hathaway (BRK.B) 진입", action:"LLY 전량 매도 → BRK.B 동일 금액 매수", status:"완료" },
-  { date:"2025-11-05", desc:"Samsung(TSMC 교체 없음) → 순위 변동 없음", action:"조치 불필요", status:"확인" },
+  { date:"2025-11-05", desc:"Samsung(TSMC 관변 없음) → 순위 변동 없음", action:"조치 불필요", status:"확인" },
   { date:"2025-08-12", desc:"Berkshire Hathaway (BRK.B) → 10위 밖 탈락, Broadcom (AVGO) 진입", action:"BRK.B 전량 매도 → AVGO 동일 금액 매수", status:"완료" },
   { date:"2025-03-01", desc:"Tesla (TSLA) → 10위 밖 탈락 후 재진입", action:"TSLA 매도 후 재매수 (변동성 주의)", status:"완료" },
 ];
 
 const SECTOR_COLORS = {
   "반도체":"#76b900","소비자 전자":"#a2aaad","인터넷 서비스":"#4285f4",
-  "소프트웨어":"#00a4ef","이커머스/클라우드":"#ff9900","전길차/에너지":"#e31937",
+  "소프트웨어":"#00a4ef","이커머스/클라우드":"#ff9900","전기차/에너지":"#e31937",
   "소셜미디어":"#0668e1","유통/리테일":"#0071ce","금융/지주회사":"#2d1a47"
 };
 
@@ -504,9 +513,9 @@ function renderExited() {
 function renderAdviceSummary() {
   const html = `
     <div class="advice-card">
-      <h3>📌 핵시 요약</h3>
+      <h3>🎌 핵심 요약</h3>
       <p>현재 Top 10 기업의 핵심은 <strong>AI 인프라</strong>입니다. NVIDIA, Broadcom 등 반도체 기업이 강세를 보이고 있으며,
-      빅테크 기업들의 AI 투자 확대가 이 추세를 뒴밯침합니다. 다만 PER이 높은 Tesla(125배)와 Walmart(41배)는
+      빅테크 기업들의 AI 투자 확대가 이 추세를 뒷받침합니다. 다만 PER이 높은 Tesla(125배)와 Walmart(41배)는
       기대감이 과도할 수 있어 주의가 필요합니다.</p>
       <span class="tag" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">AI 반도체 강세</span>
       <span class="tag" style="background:rgba(59,130,246,0.15);color:var(--accent-blue);">클라우드 성장</span>
@@ -515,7 +524,7 @@ function renderAdviceSummary() {
     <div class="advice-card">
       <h3>⚖️ 리스크 포인트</h3>
       <p>Apple 부채비율 134%로 Top 10 중 최고. Broadcom도 VMware 인수 후 105%로 높은 편.
-      금리 인하 지연 시 부채 부담 확대 가능성. Tesla는 PER 125배로 실저 기대치가 매우 높아
+      금리 인하 지연 시 부채 부담 확대 가능성. Tesla는 PER 125배로 실적 기대치가 매우 높아
       하방 리스크에 유의해야 합니다.</p>
     </div>
   `;
@@ -574,8 +583,8 @@ function renderAlerts() {
   let html = '';
   const alerts = [
     { type:'warning', icon:'⚠️', title:'순위 근접 감시 대상', msg:'Berkshire Hathaway(10위)와 TSMC($0.98T)의 시가총액 차이가 7% 미만입니다. 교체 가능성을 모니터링 중입니다.' },
-    { type:'info', icon:'📊', title:'일인 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발송합니다.' },
-    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런싱 완료.' },
+    { type:'info', icon:'📊', title:'일일 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발섡합니다.' },
+    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런식 완료.' },
     { type:'success', icon:'✅', title:'2026-01-20 리밸런싱 완료', msg:'Eli Lilly 매도 → Berkshire Hathaway 매수 완료. 동일 금액 배분 적용.' },
   ];
   alerts.forEach(a => {
@@ -592,11 +601,11 @@ function renderAlerts() {
 
 function renderAdvice() {
   const advices = [
-    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동이가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익량 달성했습니다. 핵쌴은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
-    { icon:'📈', title:'현재 시장 전망', text:'AI 인프라 사이클이 본격화되면서 반도체· 클라우드 기업이 상위권을 지배하고 있습니다. NVIDIA z�RH;ef;"�;&�H�H:��{($;%�;g�;%�{%�{'!:�o;'(;)�;)${'m:�l[X�];'f;%l{)�;'m:�";%�:�b���:���:��:������a;-";(l;(%{!.:� :�;`�:�:��;'�;%�:��:�,;( H:��:��{!,{%�;(�;'f:� ;ea;&�;ej니다.' },
-    { icon:'⚠️', title:'리스크 관리', text:'이 전랴의 약점은 대형주 집중 리스크와 교체 시점의 거래비용입니다. 특히 Tesla(PER 125x)처럼 기대감이 극도로 반영된 종목이 급락하면 포트폴리오 타격이 클니다. 각 종목 10% 균등배분으로 리스크를 분산하되, 부채비율이 높은 Apple(134%), Broadcom(105%)의 재무건전성을 주시하세요.' },
-    { icon:'💎', title:'핵시 투자 포인트', text:'① Alphabet — PER 22.8배로 빅테크 중 가장 저평가. AI 검색 전환 성공 시 추가 상승 여력. ② Berkshire — PER 10.2배, 현금 보유량 최대. 방어적 성격 + 밸륐에이션 매력. ③ NVIDIA — AI 사이클 핵시 수혜주이나 곡평가 구간 진입. 실적이 기대에 미치지 못할 경우 급락 가능.' },
-    { icon:'🔄', title:'리밸런싱 가이드', text:'10위 밖으로 나가는 기업 발생 시: ① 해당 기업 전량 매도 → ② 신규 진입 기업을 동일 금액으로 매수 → ③ 매달 1회 전체 포트폴리오 균듳 리밴런싱 권장. 거래비용을 전이기 위해 시장가 주문보다 지정가 주문을 활용하세요.' },
+    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동이가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익을 달성했습니다. 핵�,은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
+    { icon:'📈', title:'현재 시장 전망', text:'AI 인프라 사이클이 본격화되면서 반도체·클라우드 기업이 상위권을 지배하고 있습니다. NVIDIA는 AI 학습용 GPU 독점에 힘입어 1위를 유지 중이며, Alphabet의 약진이 눈에 띕니다. 다만 2026년 초 조정세가 나타나고 있어 단기적 변동성에 주의가 필요합니다.' },
+    { icon:'⚠️', title:'리스크 관리', text:'이 전략의 약점은 대형주 집중 리스크와 교체 시점의 거래비용입니다. 특히 Tesla(PER 125x)처럼 기대감이 극도로 반영된 종목이 급락하면 포트폴리오 타격이 큽니다. 각 종목 10% 균등배분으로 리스크를 분산하되, 부채비율이 높은 Apple(134%), Broadcom(105%)의 재무건전성을 주시하세요.' },
+    { icon:'💎', title:'핵심 투자 포인트', text:'① Alphabet — PER 22.8배로 빅테크 중 가장 저평가. AI 검색 전환 성공 시 추가 상승 여력. ② Berkshire — PER 10.2배, 현금 보유량 최대. 방어적 성격 + 밸류에이션 매력. ③ NVIDIA — AI 사이클 핵심 수혜주이나 고평가 구간 진입. 실적이 기대에 미치지 못할 경우 급락 가능.' },
+    { icon:'🔄', title:'리밸런싱 가이드', text:'10위 밖으로 나가는 기업 발생 시: ① 해당 기업 전량 매도 → ② 신규 진입 기업을 동일 금액으로 매수 → ③ 매달 1회 전체 포트폴리오 균등 리밸런싱 권장. 거래비용을 줄이기 위해 시장가 주문보다 지정가 주문을 활용하세요.' },
   ];
   let html = '';
   advices.forEach(a => {
@@ -623,7 +632,7 @@ function renderCharts() {
     data: {
       labels: TOP10_DATA.map(c=>c.ticker),
       datasets: [{
-        label: '시가총액 (조 달러)',
+        label: '시가�4�액 (조 달러)',
         data: TOP10_DATA.map(c=>c.marketCap),
         backgroundColor: TOP10_DATA.map(c=>c.color+'cc'),
         borderRadius: 6,
@@ -779,7 +788,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Show notification after 3 seconds
   setTimeout(() => {
-    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가총액 차이: 7% 미만');
+    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가�4�액 차이: 7% 미만');
   }, 3000);
 
   // Simulate daily check every hour (in production: use Cloudflare Cron)
