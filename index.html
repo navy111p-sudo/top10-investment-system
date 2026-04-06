@@ -95,6 +95,23 @@ body {
 .stat-value { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
 .stat-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
 
+/* === HEATMAP === */
+.heatmap-cell {
+  border-radius: 8px; padding: 12px 8px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s; min-height: 90px; position: relative; overflow: hidden;
+}
+.heatmap-cell:hover { transform: scale(1.03); box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 2; }
+.heatmap-ticker { font-size: 16px; font-weight: 800; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+.heatmap-change { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.9); margin-top: 2px; }
+.heatmap-mcap { font-size: 10px; color: rgba(255,255,255,0.65); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+@media (max-width: 768px) {
+  #heatmapContainer { grid-template-columns: repeat(3, 1fr) !important; }
+  .heatmap-cell { min-height: 70px; padding: 8px 4px; }
+  .heatmap-ticker { font-size: 13px; }
+  .heatmap-change { font-size: 11px; }
+}
+
 /* === SORTABLE TABLE HEADERS === */
 .sortable { cursor: pointer; user-select: none; white-space: nowrap; position: relative; }
 .sortable:hover { background: rgba(59,130,246,0.15); }
@@ -259,6 +276,12 @@ tr:hover td { background: rgba(59,130,246,0.05); }
 
   <!-- KPI Cards -->
   <div class="grid-4" id="kpiCards"></div>
+
+  <!-- Heatmap -->
+  <div class="card" style="margin-bottom:20px;">
+    <h3 style="font-size:15px; margin-bottom:12px;">🗺️ Top 10 히트맵</h3>
+    <div id="heatmapContainer" style="display:grid; gap:4px; grid-template-columns: repeat(5, 1fr); grid-template-rows: auto auto; min-height:220px;"></div>
+  </div>
 
   <!-- Main Table -->
   <div class="table-wrap">
@@ -508,6 +531,36 @@ function renderKPI() {
   document.getElementById('kpiCards').innerHTML = html;
 }
 
+function renderHeatmap() {
+  var container = document.getElementById('heatmapContainer');
+  var sorted = TOP10_DATA.slice().sort(function(a,b){ return b.marketCap - a.marketCap; });
+  container.style.gridTemplateColumns = 'repeat(5, 1fr)';
+  var html = '';
+  sorted.forEach(function(c, i) {
+    var changePct = ((c.priceChange / (c.price - c.priceChange)) * 100);
+    var absChange = Math.abs(changePct);
+    var bg;
+    if (changePct >= 0) {
+      if (absChange > 2) bg = 'rgba(16,185,129,0.85)';
+      else if (absChange > 1) bg = 'rgba(16,185,129,0.55)';
+      else bg = 'rgba(16,185,129,0.35)';
+    } else {
+      if (absChange > 2) bg = 'rgba(239,68,68,0.85)';
+      else if (absChange > 1) bg = 'rgba(239,68,68,0.55)';
+      else bg = 'rgba(239,68,68,0.35)';
+    }
+    var sign = changePct >= 0 ? '+' : '';
+    var span = i < 2 ? 'grid-column: span 2;' : '';
+    var size = i < 2 ? 'min-height:120px;' : '';
+    html += '<div class="heatmap-cell" style="background:' + bg + ';' + span + size + '">' +
+      '<div class="heatmap-ticker">' + c.ticker + '</div>' +
+      '<div class="heatmap-change">' + sign + changePct.toFixed(2) + '%</div>' +
+      '<div class="heatmap-mcap">' + c.marketCap + 'T</div>' +
+    '</div>';
+  });
+  container.innerHTML = html;
+}
+
 // ===== SORTING STATE =====
 let currentSortKey = null;
 let currentSortDir = 'asc';
@@ -569,7 +622,7 @@ function renderMainTable() {
       '<td><span class="sector-badge" style="background:' + c.color + '22;color:' + c.color + ';">' + c.sector + '</span></td>' +
       '<td>' + c.revenue + '</td>' +
       '<td>' + c.profit + '</td>' +
-      '<td>' + c.debtRatio + '</td>' +
+      '<td' + (parseFloat(c.debtRatio)>=50 ? ' style="color:var(--accent-red);font-weight:700;"' : '') + '>' + c.debtRatio + '</td>' +
       '<td class="' + (parseFloat(c.roe)>25?'positive':'') + '">' + c.roe + '</td>' +
       '<td>' + c.per + '</td>' +
       '<td>' + c.dividend + '</td>' +
@@ -586,6 +639,7 @@ function simulatePriceUpdate() {
     c.price = Math.round((c.price + c.priceChange) * 100) / 100;
   });
   renderMainTable();
+  renderHeatmap();
 }
 
 function renderExited() {
@@ -872,6 +926,7 @@ function simulateDailyCheck() {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   renderKPI();
+  renderHeatmap();
   renderMainTable();
   renderExited();
   renderAdviceSummary();
