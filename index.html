@@ -99,8 +99,8 @@ body {
 .sortable { cursor: pointer; user-select: none; white-space: nowrap; position: relative; }
 .sortable:hover { background: rgba(59,130,246,0.15); }
 .sort-icon { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
-.sortable.asc .sort-icon::after { content: '▲'; }
-.sortable.desc .sort-icon::after { content: '▼'; }
+.sortable.asc .sort-icon::after { content: '\25B2'; }
+.sortable.desc .sort-icon::after { content: '\25BC'; }
 .sortable.asc .sort-icon, .sortable.desc .sort-icon { color: var(--accent-blue); font-weight: 700; }
 .sortable.asc .sort-icon { font-size: 0; }
 .sortable.asc .sort-icon::after, .sortable.desc .sort-icon::after { font-size: 11px; }
@@ -540,6 +540,13 @@ function sortTable(key, type) {
     if (th.dataset.key === key) th.classList.add(currentSortDir);
   });
   renderMainTable();
+
+  // Sort table on header click
+  document.querySelectorAll('#mainTable thead .sortable').forEach(th => {
+    th.addEventListener('click', () => sortTable(th.dataset.key, th.dataset.type));
+  });
+  // Simulate real-time price updates every 5 seconds
+  setInterval(simulatePriceUpdate, 5000);
 }
 
 function renderMainTable() {
@@ -564,320 +571,7 @@ function renderMainTable() {
       '<td><span class="rank-badge ' + rankClass + '">' + c.rank + '</span></td>' +
       '<td><span class="ticker">' + c.ticker + '</span></td>' +
       '<td><span class="company-name">' + c.name + '</span></td>' +
-      '<td class="price-cell">
-}
-
-function renderExited() {
-  let html = '';
-  if (EXITED_COMPANIES.length === 0) {
-    html = '<div class="alert-box alert-success"><span class="alert-icon">✅</span><div class="alert-content"><h4>현재 탈락 기업 없음</h4><p>모든 Top 10 기업이 안정적으로 순위를 유지하고 있습니다.</p></div></div>';
-  } else {
-    EXITED_COMPANIES.forEach(c => {
-      html += `<div class="alert-box alert-danger">
-        <span class="alert-icon">📉</span>
-        <div class="alert-content">
-          <h4>${c.ticker} — ${c.name} (탈락일: ${c.date})</h4>
-          <p><strong>시가총액:</strong> ${c.marketCap} | <strong>사유:</strong> ${c.reason}</p>
-        </div>
-      </div>`;
-    });
-  }
-  document.getElementById('exitedCompanies').innerHTML = html;
-}
-
-function renderAdviceSummary() {
-  const html = `
-    <div class="advice-card">
-      <h3>🎌 핵심 요약</h3>
-      <p>현재 Top 10 기업의 핵심은 <strong>AI 인프라</strong>입니다. NVIDIA, Broadcom 등 반도체 기업이 강세를 보이고 있으며,
-      빅테크 기업들의 AI 투자 확대가 이 추세를 뒷받침합니다. 다만 PER이 높은 Tesla(125배)와 Walmart(41배)는
-      기대감이 과도할 수 있어 주의가 필요합니다.</p>
-      <span class="tag" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">AI 반도체 강세</span>
-      <span class="tag" style="background:rgba(59,130,246,0.15);color:var(--accent-blue);">클라우드 성장</span>
-      <span class="tag" style="background:rgba(245,158,11,0.15);color:var(--accent-yellow);">고PER 주의</span>
-    </div>
-    <div class="advice-card">
-      <h3>⚖️ 리스크 포인트</h3>
-      <p>Apple 부채비율 134%로 Top 10 중 최고. Broadcom도 VMware 인수 후 105%로 높은 편.
-      금리 인하 지연 시 부채 부담 확대 가능성. Tesla는 PER 125배로 실적 기대치가 매우 높아
-      하방 리스크에 유의해야 합니다.</p>
-    </div>
-  `;
-  document.getElementById('adviceSummary').innerHTML = html;
-}
-
-function renderDetailCards() {
-  let html = '';
-  TOP10_DATA.forEach(c => {
-    html += `<div class="card" style="margin-bottom:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div>
-          <span class="rank-badge ${c.rank<=3?'rank-'+c.rank:'rank-other'}" style="margin-right:10px;">${c.rank}</span>
-          <span class="ticker" style="font-size:16px;">${c.ticker}</span>
-          <span class="company-name" style="margin-left:8px;font-size:16px;">${c.name}</span>
-        </div>
-        <span class="sector-badge" style="background:${c.color}22;color:${c.color};">${c.sector}</span>
-      </div>
-      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.7;">${c.desc}</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;">
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">시가총액</div>
-          <div style="font-weight:700;">$${c.marketCap}T</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">매출</div>
-          <div style="font-weight:700;">${c.revenue}</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">순이익</div>
-          <div style="font-weight:700;">${c.profit}</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">부채비율</div>
-          <div style="font-weight:700;${parseFloat(c.debtRatio)>100?'color:var(--accent-red)':''}">${c.debtRatio}</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">ROE</div>
-          <div style="font-weight:700;color:var(--accent-green);">${c.roe}</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">PER</div>
-          <div style="font-weight:700;${c.per>50?'color:var(--accent-red)':''}">${c.per}x</div>
-        </div>
-        <div style="text-align:center;padding:10px;background:var(--bg-secondary);border-radius:10px;">
-          <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">배당률</div>
-          <div style="font-weight:700;">${c.dividend}</div>
-        </div>
-      </div>
-    </div>`;
-  });
-  document.getElementById('detailCards').innerHTML = html;
-}
-
-function renderAlerts() {
-  let html = '';
-  const alerts = [
-    { type:'warning', icon:'⚠️', title:'순위 근접 감시 대상', msg:'Berkshire Hathaway(10위)와 TSMC($0.98T)의 시가총액 차이가 7% 미만입니다. 교체 가능성을 모니터링 중입니다.' },
-    { type:'info', icon:'📊', title:'일일 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발섡합니다.' },
-    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런식 완료.' },
-    { type:'success', icon:'✅', title:'2026-01-20 리밸런싱 완료', msg:'Eli Lilly 매도 → Berkshire Hathaway 매수 완료. 동일 금액 배분 적용.' },
-  ];
-  alerts.forEach(a => {
-    html += `<div class="alert-box alert-${a.type}"><span class="alert-icon">${a.icon}</span><div class="alert-content"><h4>${a.title}</h4><p>${a.msg}</p></div></div>`;
-  });
-  document.getElementById('alertList').innerHTML = html;
-
-  let histHtml = '';
-  HISTORY_EVENTS.forEach(e => {
-    histHtml += `<tr><td>${e.date}</td><td>${e.desc}</td><td style="font-size:12px;">${e.action}</td><td><span class="sector-badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green);">${e.status}</span></td></tr>`;
-  });
-  document.getElementById('historyTableBody').innerHTML = histHtml;
-}
-
-function renderAdvice() {
-  const advices = [
-    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동이가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익을 달성했습니다. 핵�,은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
-    { icon:'📈', title:'현재 시장 전망', text:'AI 인프라 사이클이 본격화되면서 반도체·클라우드 기업이 상위권을 지배하고 있습니다. NVIDIA는 AI 학습용 GPU 독점에 힘입어 1위를 유지 중이며, Alphabet의 약진이 눈에 띕니다. 다만 2026년 초 조정세가 나타나고 있어 단기적 변동성에 주의가 필요합니다.' },
-    { icon:'⚠️', title:'리스크 관리', text:'이 전략의 약점은 대형주 집중 리스크와 교체 시점의 거래비용입니다. 특히 Tesla(PER 125x)처럼 기대감이 극도로 반영된 종목이 급락하면 포트폴리오 타격이 큽니다. 각 종목 10% 균등배분으로 리스크를 분산하되, 부채비율이 높은 Apple(134%), Broadcom(105%)의 재무건전성을 주시하세요.' },
-    { icon:'💎', title:'핵심 투자 포인트', text:'① Alphabet — PER 22.8배로 빅테크 중 가장 저평가. AI 검색 전환 성공 시 추가 상승 여력. ② Berkshire — PER 10.2배, 현금 보유량 최대. 방어적 성격 + 밸류에이션 매력. ③ NVIDIA — AI 사이클 핵심 수혜주이나 고평가 구간 진입. 실적이 기대에 미치지 못할 경우 급락 가능.' },
-    { icon:'🔄', title:'리밸런싱 가이드', text:'10위 밖으로 나가는 기업 발생 시: ① 해당 기업 전량 매도 → ② 신규 진입 기업을 동일 금액으로 매수 → ③ 매달 1회 전체 포트폴리오 균등 리밸런싱 권장. 거래비용을 줄이기 위해 시장가 주문보다 지정가 주문을 활용하세요.' },
-  ];
-  let html = '';
-  advices.forEach(a => {
-    html += `<div class="advice-card"><h3>${a.icon} ${a.title}</h3><p>${a.text}</p></div>`;
-  });
-  document.getElementById('adviceCards').innerHTML = html;
-}
-
-// ===== CHARTS =====
-const chartDefaults = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { labels: { color:'#94a3b8', font:{size:11} } } },
-  scales: {
-    x: { ticks:{color:'#64748b',font:{size:10}}, grid:{color:'rgba(45,55,72,0.5)'} },
-    y: { ticks:{color:'#64748b',font:{size:10}}, grid:{color:'rgba(45,55,72,0.5)'} }
-  }
-};
-
-function renderCharts() {
-  // Market Cap Bar
-  new Chart(document.getElementById('marketCapChart'), {
-    type: 'bar',
-    data: {
-      labels: TOP10_DATA.map(c=>c.ticker),
-      datasets: [{
-        label: '시가�4�액 (조 달러)',
-        data: TOP10_DATA.map(c=>c.marketCap),
-        backgroundColor: TOP10_DATA.map(c=>c.color+'cc'),
-        borderRadius: 6,
-      }]
-    },
-    options: { ...chartDefaults, plugins:{ ...chartDefaults.plugins, legend:{display:false}} }
-  });
-
-  // Sector Pie
-  const sectorMap = {};
-  TOP10_DATA.forEach(c => { sectorMap[c.sector] = (sectorMap[c.sector]||0) + c.marketCap; });
-  new Chart(document.getElementById('sectorChart'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(sectorMap),
-      datasets: [{
-        data: Object.values(sectorMap),
-        backgroundColor: Object.keys(sectorMap).map(s=>SECTOR_COLORS[s]||'#666'),
-        borderWidth: 0,
-      }]
-    },
-    options: { responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{ position:'right', labels:{color:'#94a3b8',font:{size:10},padding:8} } }
-    }
-  });
-
-  // Mini Compare (1yr)
-  const last12 = ['4월','5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월'];
-  const gen1yr = (base,vol) => {
-    let v=[base]; for(let i=1;i<12;i++) v.push(v[i-1]*(1+(Math.random()-0.45)*vol));
-    return v.map(x=>+(x).toFixed(1));
-  };
-  new Chart(document.getElementById('miniCompareChart'), {
-    type:'line',
-    data:{
-      labels:last12,
-      datasets:[
-        {label:'Top10 전략',data:gen1yr(100,0.08),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.3,pointRadius:2},
-        {label:'S&P 500',data:gen1yr(100,0.05),borderColor:'#3b82f6',tension:0.3,pointRadius:2},
-        {label:'나스닥100',data:gen1yr(100,0.07),borderColor:'#8b5cf6',tension:0.3,pointRadius:2},
-        {label:'KOSPI',data:gen1yr(100,0.06),borderColor:'#06b6d4',tension:0.3,pointRadius:2},
-      ]
-    },
-    options:chartDefaults
-  });
-
-  // Backtest Cumulative
-  const cumLabels = ['2015말',...YEARS];
-  new Chart(document.getElementById('backtestChart'), {
-    type:'line',
-    data:{
-      labels:cumLabels,
-      datasets:[
-        {label:'Top10 전략',data:CUM.top10,borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.08)',fill:true,tension:0.3,borderWidth:3,pointRadius:3},
-        {label:'S&P 500',data:CUM.sp500,borderColor:'#3b82f6',tension:0.3,borderWidth:2,pointRadius:3},
-        {label:'나스닥 100',data:CUM.nasdaq,borderColor:'#8b5cf6',tension:0.3,borderWidth:2,pointRadius:3},
-        {label:'다우존스',data:CUM.dow,borderColor:'#f59e0b',tension:0.3,borderWidth:2,pointRadius:3},
-      ]
-    },
-    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
-  });
-
-  // Yearly Returns Bar
-  new Chart(document.getElementById('yearlyReturnChart'), {
-    type:'bar',
-    data:{
-      labels:YEARS,
-      datasets:[
-        {label:'Top10',data:BACKTEST.top10,backgroundColor:'#10b981cc'},
-        {label:'S&P 500',data:BACKTEST.sp500,backgroundColor:'#3b82f6cc'},
-        {label:'나스닥100',data:BACKTEST.nasdaq,backgroundColor:'#8b5cf6cc'},
-        {label:'다우존스',data:BACKTEST.dow,backgroundColor:'#f59e0bcc'},
-      ]
-    },
-    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
-  });
-
-  // KOSPI Compare
-  new Chart(document.getElementById('kospiCompareChart'), {
-    type:'line',
-    data:{
-      labels:cumLabels,
-      datasets:[
-        {label:'Top10 전략',data:CUM.top10,borderColor:'#10b981',tension:0.3,borderWidth:3,pointRadius:3},
-        {label:'S&P 500',data:CUM.sp500,borderColor:'#3b82f6',tension:0.3,borderWidth:2,pointRadius:3},
-        {label:'나스닥 100',data:CUM.nasdaq,borderColor:'#8b5cf6',tension:0.3,borderWidth:2,pointRadius:3},
-        {label:'다우존스',data:CUM.dow,borderColor:'#f59e0b',tension:0.3,borderWidth:2,pointRadius:3},
-        {label:'KOSPI',data:CUM.kospi,borderColor:'#06b6d4',tension:0.3,borderWidth:2,pointRadius:3,borderDash:[5,5]},
-      ]
-    },
-    options:{...chartDefaults, scales:{...chartDefaults.scales, y:{...chartDefaults.scales.y, ticks:{...chartDefaults.scales.y.ticks, callback:v=>v+'%'}}}}
-  });
-}
-
-// ===== NAVIGATION =====
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-}
-
-// ===== NOTIFICATION =====
-function closeNotification() {
-  document.getElementById('notificationBar').classList.remove('show');
-}
-function showNotification(text) {
-  document.getElementById('notificationText').textContent = text;
-  document.getElementById('notificationBar').classList.add('show');
-}
-function toggleAlert() {
-  if (document.getElementById('alertEnabled').checked && 'Notification' in window) {
-    Notification.requestPermission();
-  }
-}
-
-// ===== CLOCK =====
-function updateClock() {
-  const now = new Date();
-  const opts = {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
-  document.getElementById('navTime').textContent = now.toLocaleString('ko-KR',opts);
-}
-
-// ===== SIMULATED DAILY CHECK =====
-function simulateDailyCheck() {
-  // In production, this would call a real API
-  console.log('📊 일일 시가총액 순위 체크 실행...');
-  // Check if any company dropped below threshold
-  const watchCompany = TOP10_DATA[TOP10_DATA.length - 1];
-  if (watchCompany.marketCap < 1.1) {
-    showNotification(`⚠️ 경고: ${watchCompany.name} (${watchCompany.ticker})의 시가총액이 $${watchCompany.marketCap}T로 10위 경계선에 근접합니다.`);
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('📊 Top10 투자시스템 알림', {
-        body: `${watchCompany.name}이 10위 경계선에 근접합니다. 시가총액: $${watchCompany.marketCap}T`,
-        icon: '📊'
-      });
-    }
-  }
-}
-
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-  renderKPI();
-  renderMainTable();
-  renderExited();
-  renderAdviceSummary();
-  renderDetailCards();
-  renderAlerts();
-  renderAdvice();
-  renderCharts();
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  // Show notification after 3 seconds
-  setTimeout(() => {
-    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가�4�액 차이: 7% 미만');
-  }, 3000);
-
-  // Simulate daily check every hour (in production: use Cloudflare Cron)
-  setInterval(simulateDailyCheck, 3600000);
-
-  // Request notification permission
-  if ('Notification' in window) {
-    Notification.requestPermission();
-  }
-});
-</script>
-</body>
-</html>
- + c.price.toFixed(2) + '<span class="price-change ' + changeClass + '">' + changeSign + changePct + '%</span></td>' +
+      '<td class="price-cell">\x24' + c.price.toFixed(2) + '<span class="price-change ' + changeClass + '">' + changeSign + changePct + '%</span></td>' +
       '<td><strong>' + c.marketCap + 'T</strong></td>' +
       '<td><span class="sector-badge" style="background:' + c.color + '22;color:' + c.color + ';">' + c.sector + '</span></td>' +
       '<td>' + c.revenue + '</td>' +
@@ -900,7 +594,6 @@ function simulatePriceUpdate() {
   });
   renderMainTable();
 }
-}
 
 function renderExited() {
   let html = '';
@@ -1187,13 +880,6 @@ function simulateDailyCheck() {
 document.addEventListener('DOMContentLoaded', () => {
   renderKPI();
   renderMainTable();
-
-  // Sort table on header click
-  document.querySelectorAll('#mainTable thead .sortable').forEach(th => {
-    th.addEventListener('click', () => sortTable(th.dataset.key, th.dataset.type));
-  });
-  // Simulate real-time price updates every 5 seconds
-  setInterval(simulatePriceUpdate, 5000);
   renderExited();
   renderAdviceSummary();
   renderDetailCards();
