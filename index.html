@@ -428,7 +428,7 @@ const TOP10_DATA = [
   { rank:4, ticker:"MSFT", name:"Microsoft", marketCap:3.01, sector:"소프트웨어", sectorEn:"Software", color:"#00a4ef",
     revenue:"2,700억$", profit:"905억$", debtRatio:"42%", roe:"38%", per:31.5, dividend:"0.72%",
     price:404.72, priceChange:-2.15,
-      desc:"Azure 클라우드·Office 365·AI Copilot. 기업용 소프트웨어 강자. 안정적 수익 구조에 배당도 꾸�t히 인상." },
+      desc:"Azure 클라우드·Office 365·AI Copilot. 기업용 소프트웨어 강자. 안정적 수익 구조에 배당도 꾸준히 인상." },
   { rank:5, ticker:"AMZN", name:"Amazon", marketCap:2.25, sector:"이커머스/클라우드", sectorEn:"E-commerce/Cloud", color:"#ff9900",
     revenue:"6,380억$", profit:"592억$", debtRatio:"58%", roe:"23%", per:35.1, dividend:"0%",
     price:213.46, priceChange:+1.87,
@@ -540,13 +540,6 @@ function sortTable(key, type) {
     if (th.dataset.key === key) th.classList.add(currentSortDir);
   });
   renderMainTable();
-
-  // Sort table on header click
-  document.querySelectorAll('#mainTable thead .sortable').forEach(th => {
-    th.addEventListener('click', () => sortTable(th.dataset.key, th.dataset.type));
-  });
-  // Simulate real-time price updates every 5 seconds
-  setInterval(simulatePriceUpdate, 5000);
 }
 
 function renderMainTable() {
@@ -686,8 +679,8 @@ function renderAlerts() {
   let html = '';
   const alerts = [
     { type:'warning', icon:'⚠️', title:'순위 근접 감시 대상', msg:'Berkshire Hathaway(10위)와 TSMC($0.98T)의 시가총액 차이가 7% 미만입니다. 교체 가능성을 모니터링 중입니다.' },
-    { type:'info', icon:'📊', title:'일일 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발섡합니다.' },
-    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런식 완료.' },
+    { type:'info', icon:'📊', title:'일일 자동 체크 활성화', msg:'매일 오전 9시(KST) 시가총액 순위를 자동으로 확인합니다. 변동 시 즉시 알림을 발송합니다.' },
+    { type:'danger', icon:'🔴', title:'2026-02-15 변동 발생', msg:'JP Morgan Chase가 10위 밖으로 탈락. Walmart가 신규 진입. 자동 리밸런싱 완료.' },
     { type:'success', icon:'✅', title:'2026-01-20 리밸런싱 완료', msg:'Eli Lilly 매도 → Berkshire Hathaway 매수 완료. 동일 금액 배분 적용.' },
   ];
   alerts.forEach(a => {
@@ -704,7 +697,7 @@ function renderAlerts() {
 
 function renderAdvice() {
   const advices = [
-    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동이가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익을 달성했습니다. 핵�,은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
+    { icon:'🎯', title:'전략 개요', text:'시가총액 Top 10 동일가중 투자 전략은 시장의 "승자" 기업에 집중 투자하는 모멘텀 전략입니다. 10년간 S&P 500 대비 약 2.6배의 초과수익을 달성했습니다. 핵심은 승자가 바뀔 때 빠르게 교체하는 것입니다.' },
     { icon:'📈', title:'현재 시장 전망', text:'AI 인프라 사이클이 본격화되면서 반도체·클라우드 기업이 상위권을 지배하고 있습니다. NVIDIA는 AI 학습용 GPU 독점에 힘입어 1위를 유지 중이며, Alphabet의 약진이 눈에 띕니다. 다만 2026년 초 조정세가 나타나고 있어 단기적 변동성에 주의가 필요합니다.' },
     { icon:'⚠️', title:'리스크 관리', text:'이 전략의 약점은 대형주 집중 리스크와 교체 시점의 거래비용입니다. 특히 Tesla(PER 125x)처럼 기대감이 극도로 반영된 종목이 급락하면 포트폴리오 타격이 큽니다. 각 종목 10% 균등배분으로 리스크를 분산하되, 부채비율이 높은 Apple(134%), Broadcom(105%)의 재무건전성을 주시하세요.' },
     { icon:'💎', title:'핵심 투자 포인트', text:'① Alphabet — PER 22.8배로 빅테크 중 가장 저평가. AI 검색 전환 성공 시 추가 상승 여력. ② Berkshire — PER 10.2배, 현금 보유량 최대. 방어적 성격 + 밸류에이션 매력. ③ NVIDIA — AI 사이클 핵심 수혜주이나 고평가 구간 진입. 실적이 기대에 미치지 못할 경우 급락 가능.' },
@@ -735,7 +728,7 @@ function renderCharts() {
     data: {
       labels: TOP10_DATA.map(c=>c.ticker),
       datasets: [{
-        label: '시가�4�액 (조 달러)',
+        label: '시가총액 (조 달러)',
         data: TOP10_DATA.map(c=>c.marketCap),
         backgroundColor: TOP10_DATA.map(c=>c.color+'cc'),
         borderRadius: 6,
@@ -889,9 +882,16 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
 
+  // Sort table on header click
+  document.querySelectorAll('#mainTable thead .sortable').forEach(th => {
+    th.addEventListener('click', () => sortTable(th.dataset.key, th.dataset.type));
+  });
+  // Simulate real-time price updates every 5 seconds
+  setInterval(simulatePriceUpdate, 5000);
+
   // Show notification after 3 seconds
   setTimeout(() => {
-    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가�4�액 차이: 7% 미만');
+    showNotification('⚠️ Berkshire Hathaway (BRK.B)가 10위 경계선에 근접합니다. TSMC와의 시가총액 차이: 7% 미만');
   }, 3000);
 
   // Simulate daily check every hour (in production: use Cloudflare Cron)
