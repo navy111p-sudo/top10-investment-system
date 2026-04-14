@@ -923,6 +923,40 @@ function simulateDailyCheck() {
   }
 }
 
+// ===== LIVE DATA FETCH =====
+async function fetchLiveQuotes() {
+  try {
+    const res = await fetch('/api/quotes', { cache: 'no-store' });
+    if (!res.ok) return false;
+    const json = await res.json();
+    if (!json.data || !json.data.length) return false;
+    const merged = json.data.map((d, i) => {
+      const existing = TOP10_DATA.find(x => x.ticker === d.ticker || x.ticker === d.ticker.replace('-','.')) || TOP10_DATA[i] || {};
+      return Object.assign({}, existing, {
+        rank: i + 1,
+        ticker: d.ticker.replace('-','.'),
+        name: d.name || existing.name,
+        sector: d.sector || existing.sector,
+        price: d.price,
+        priceChange: d.priceChange,
+        marketCap: +d.marketCap.toFixed(3),
+        per: d.per != null ? +d.per.toFixed(1) : (existing.per || 0),
+        debtRatio: d.debtRatio != null ? d.debtRatio : (existing.debtRatio || 0),
+        color: existing.color || '#3b82f6',
+      });
+    });
+    TOP10_DATA.length = 0;
+    merged.forEach(m => TOP10_DATA.push(m));
+    renderKPI();
+    renderHeatmap();
+    renderMainTable();
+    return true;
+  } catch (e) {
+    console.warn('fetchLiveQuotes failed:', e);
+    return false;
+  }
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   renderKPI();
@@ -942,6 +976,8 @@ document.addEventListener('DOMContentLoaded', () => {
     th.addEventListener('click', () => sortTable(th.dataset.key, th.dataset.type));
   });
   // Simulate real-time price updates every 5 seconds
+  fetchLiveQuotes();
+  setInterval(fetchLiveQuotes, 60000);
   setInterval(simulatePriceUpdate, 5000);
 
   // Show notification after 3 seconds
